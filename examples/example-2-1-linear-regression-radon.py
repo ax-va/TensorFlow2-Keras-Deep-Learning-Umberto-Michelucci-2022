@@ -48,4 +48,13 @@ radon_features, radon_labels, county_name = rd.create_dataset()
 num_counties = len(county_name)
 num_observations = len(radon_features)
 print('Number of counties included in the dataset: ', num_counties)
+# Number of counties included in the dataset:  85
 print('Number of total samples: ', num_observations)
+# Number of total samples:  919
+print(radon_features.head())
+#    floor  county  log_uranium_ppm  pcterr
+# 0      1       0         0.502054     9.7
+# 1      0       0         0.502054    14.5
+# 2      0       0         0.502054     9.6
+# 3      0       0         0.502054    24.3
+# 4      0       1         0.428565    13.8
