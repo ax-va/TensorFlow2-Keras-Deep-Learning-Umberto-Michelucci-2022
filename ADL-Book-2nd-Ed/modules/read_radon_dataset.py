@@ -6,7 +6,7 @@ from six.moves import urllib
 import tensorflow as tf
 
 
-class read_data():
+class read_data:
 
     def __init__(self, CACHE_DIR, url_base):
         # We'll use the following directory to store files we download as well as our
