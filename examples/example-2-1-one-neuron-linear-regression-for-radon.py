@@ -16,7 +16,7 @@ from keras import layers
 import tensorflow_docs as tfdocs
 import tensorflow_docs.modeling
 
-# ignore warnings
+# Ignore warnings
 import warnings
 warnings.simplefilter('ignore')
 
