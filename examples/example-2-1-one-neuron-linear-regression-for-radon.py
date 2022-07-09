@@ -35,12 +35,12 @@ read_data = read_radon_dataset.read_data
 set_style = style_setting.set_style
 
 # inputs to download the dataset
-CACHE_DIR = os.path.join('../datasets', 'radon')
+DATASET_DIR = os.path.join('../datasets', 'radon')
 url_base = 'http://www.stat.columbia.edu/~gelman/arm/examples/radon/'
 # Alternative source:
 # url_base = ('https://raw.githubusercontent.com/pymc-devs/uq_chapter/master/reference/data/')
 
-rd = read_data(CACHE_DIR, url_base)
+rd = read_data(DATASET_DIR, url_base)
 radon_features, radon_labels, county_name = rd.create_dataset()
 
 num_counties = len(county_name)
