@@ -136,7 +136,7 @@ history = model.fit(
 
 hist = pd.DataFrame(history.history)
 hist['epoch'] = history.epoch
-hist.tail()
+print(hist.tail())
 
 f = set_style().set_general_style_parameters()
 fig = plt.figure()
