@@ -49,14 +49,8 @@ print('Number of counties included in the dataset: ', num_counties)
 # Number of counties included in the dataset:  85
 print('Number of total samples: ', num_observations)
 # Number of total samples:  919
-print(radon_features.head())
-#    floor  county  log_uranium_ppm  pcterr
-# 0      1       0         0.502054     9.7
-# 1      0       0         0.502054    14.5
-# 2      0       0         0.502054     9.6
-# 3      0       0         0.502054    24.3
-# 4      0       1         0.428565    13.8
 print(radon_features)
+#    floor  county  log_uranium_ppm  pcterr
 # 0        1       0         0.502054     9.7
 # 1        0       0         0.502054    14.5
 # 2        0       0         0.502054     9.6
@@ -86,8 +80,10 @@ print(radon_labels)
 
 np.random.seed(42)
 rnd = np.random.rand(len(radon_features)) < 0.8
+# 80%
 train_x = radon_features[rnd]  # training dataset (features, i.e. inputs)
 train_y = radon_labels[rnd]  # training dataset (labels, i.e. outputs)
+# 20%
 test_x = radon_features[~rnd]  # testing dataset (features, i.e inputs)
 test_y = radon_labels[~rnd]  # testing dataset (labels, i.e. outputs)
 print('The training dataset dimensions are: ', train_x.shape)
@@ -97,17 +93,18 @@ print('The testing dataset dimensions are: ', test_x.shape)
 
 
 def build_model():
-    _model = keras.Sequential([
+    model = keras.Sequential([
         layers.Dense(1, input_shape=[len(train_x.columns)])
     ])
     optimizer = tf.keras.optimizers.RMSprop(learning_rate=0.001)
-    _model.compile(
+    model.compile(
         loss='mse',
         optimizer=optimizer,
         metrics=['mse']
     )
-    return _model
+    return model
 
+# Mean Squared Error (MSE) measures the average squared difference between an observation's actual and predicted values
 
 model = build_model()
 model.summary()
@@ -147,7 +144,8 @@ plt.xlabel('Number of Iterations', fontproperties=fm.FontProperties(fname=f))
 plt.ylim(0, 50)
 plt.xlim(0, 1000)
 plt.axis(True)
-plt.show()
+# plt.show()
+plt.savefig('../figures/figure-2-1-1.png', bbox_inches='tight')
 
 weights = model.get_weights() # return a numpy list of weights
 print(weights)
@@ -169,5 +167,5 @@ plt.title('Linear Regression with One Neuron', fontproperties=fm.FontProperties(
 plt.ylim(-5, 20)
 plt.xlim(-5, 20)
 plt.axis(True)
-plt.show()
-
+# plt.show()
+plt.savefig('../figures/figure-2-1-2.png', bbox_inches='tight')
