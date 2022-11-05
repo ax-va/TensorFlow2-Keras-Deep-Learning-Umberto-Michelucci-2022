@@ -1,4 +1,5 @@
 # TensorFlow2-Keras-Michelucci-2022
+Umberto Michelucci, "Applied Deep Learning with TensorFlow 2: Learn to Implement Advanced Deep Learning Techniques with Python", Second Edition, Apress, 2022
 
  https://adl.toelt.ai
  
