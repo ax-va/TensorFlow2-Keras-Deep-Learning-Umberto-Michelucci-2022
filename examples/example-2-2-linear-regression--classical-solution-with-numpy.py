@@ -2,7 +2,6 @@
 """
 -- Linear Regression Model with NumPy: Classical Solution
 """
-
 # general libraries
 import os
 import numpy as np

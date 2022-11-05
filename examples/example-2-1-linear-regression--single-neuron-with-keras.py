@@ -3,7 +3,6 @@
 -- Hands-on with a Single Neuron
 ---- Linear Regression Model with Keras
 """
-
 # general libraries
 import os
 import numpy as np
