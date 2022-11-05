@@ -93,9 +93,7 @@ print('The testing dataset dimensions are: ', test_x.shape)
 
 
 def build_model():
-    model = keras.Sequential([
-        layers.Dense(1, input_shape=[len(train_x.columns)])
-    ])
+    model = keras.Sequential([layers.Dense(1, input_shape=[len(train_x.columns)])])
     optimizer = tf.keras.optimizers.RMSprop(learning_rate=0.001)
     model.compile(
         loss='mse',
@@ -103,8 +101,8 @@ def build_model():
         metrics=['mse']
     )
     return model
-
 # Mean Squared Error (MSE) measures the average squared difference between an observation's actual and predicted values
+
 
 model = build_model()
 model.summary()
@@ -145,7 +143,7 @@ plt.ylim(0, 50)
 plt.xlim(0, 1000)
 plt.axis(True)
 # plt.show()
-plt.savefig('../figures/figure-2-1-1.png', bbox_inches='tight')
+plt.savefig('../figures/figure-2-1-1.svg', bbox_inches='tight')
 
 weights = model.get_weights() # return a numpy list of weights
 print(weights)
@@ -168,4 +166,4 @@ plt.ylim(-5, 20)
 plt.xlim(-5, 20)
 plt.axis(True)
 # plt.show()
-plt.savefig('../figures/figure-2-1-2.png', bbox_inches='tight')
+plt.savefig('../figures/figure-2-1-2.svg', bbox_inches='tight')
