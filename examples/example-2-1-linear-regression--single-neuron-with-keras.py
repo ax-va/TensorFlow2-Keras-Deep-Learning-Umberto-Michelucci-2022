@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+-- Hands-on with a Single Neuron
+---- Linear Regression Model with Keras
+"""
 
 # general libraries
 import os
@@ -19,14 +23,6 @@ import tensorflow_docs.modeling
 # Ignore warnings
 import warnings
 warnings.simplefilter('ignore')
-
-import pathlib
-import sys
-# Get the package directory
-package_dir = str(pathlib.Path(__file__).resolve().parents[1])
-# Add the package directory into sys.path if necessary
-if package_dir not in sys.path:
-    sys.path.insert(0, package_dir)
 
 import importlib
 read_radon_dataset = importlib.import_module("ADL-Book-2nd-Ed.modules.read_radon_dataset")
@@ -64,6 +60,8 @@ print(radon_features)
 # 926      0      84         1.426590     8.0
 #
 # [919 rows x 4 columns]
+
+# The radon activity label (the target variable) is the measured radon concentration in pCi/L
 print(radon_labels)
 # 0      2.2
 # 1      2.2
@@ -78,6 +76,7 @@ print(radon_labels)
 # 926    2.9
 # Name: radon, Length: 919, dtype: float64
 
+# Data splitting
 np.random.seed(42)
 rnd = np.random.rand(len(radon_features)) < 0.8
 # 80%
@@ -93,15 +92,20 @@ print('The testing dataset dimensions are: ', test_x.shape)
 
 
 def build_model():
-    model = keras.Sequential([layers.Dense(1, input_shape=[len(train_x.columns)])])
-    optimizer = tf.keras.optimizers.RMSprop(learning_rate=0.001)
-    model.compile(
-        loss='mse',
-        optimizer=optimizer,
+    single_neuron = keras.Sequential(
+        [
+            layers.Dense(
+                1,  # one neuron
+                input_shape=[len(train_x.columns)]  # number of input features
+            )
+        ]
+    )
+    single_neuron.compile(
+        loss='mse',  # Mean Squared Error (MSE) function as the loss function
+        optimizer=tf.keras.optimizers.RMSprop(learning_rate=0.001),  # RMSProp optimizer like gradient descent
         metrics=['mse']
     )
-    return model
-# Mean Squared Error (MSE) measures the average squared difference between an observation's actual and predicted values
+    return single_neuron
 
 
 model = build_model()
@@ -118,20 +122,26 @@ model.summary()
 # Non-trainable params: 0
 # _________________________________________________________________
 
-#  5 parameters to be trained—the weights associated
-#  with the 4 features, plus the bias
+#  5 parameters to be trained: the weights
+#  associated with the 4 features, plus the bias
 
 EPOCHS = 1000
-history = model.fit(
+result = model.fit(
     train_x, train_y,
     epochs=EPOCHS,
     verbose=0,
     callbacks=[tfdocs.modeling.EpochDots()]
 )
 
-hist = pd.DataFrame(history.history)
-hist['epoch'] = history.epoch
+hist = pd.DataFrame(result.history)
+hist['epoch'] = result.epoch
 print(hist.tail())
+#           loss        mse  epoch
+# 995  15.961001  15.961001    995
+# 996  15.957549  15.957549    996
+# 997  15.951381  15.951381    997
+# 998  15.963511  15.963511    998
+# 999  15.976029  15.976029    999
 
 f = set_style().set_general_style_parameters()
 fig = plt.figure()
@@ -145,18 +155,22 @@ plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-2-1-1.svg', bbox_inches='tight')
 
-weights = model.get_weights() # return a numpy list of weights
+# Return a numpy list of weights
+weights = model.get_weights()
+# Weights consisting of a 4-weights vector and a bias scalar
 print(weights)
-# [array([[-6.5743500e-01],
+# [
+#   array([[-6.5743500e-01],
 #        [ 1.4790290e-03],
 #        [ 2.7411327e+00],
-#        [-2.0764650e-01]], dtype=float32), array([4.3961654], dtype=float32)]
+#        [-2.0764650e-01]], dtype=float32),
+#   array([4.3961654], dtype=float32)
+#   ]
 
 # Predict radon activities with the built linear regression model
 test_predictions = model.predict(test_x).flatten()
 # Predictions vs. True Values PLOT
 fig = plt.figure()
-ax = fig.add_subplot(111)
 plt.scatter(test_y, test_predictions, marker='o', c='blue')
 plt.plot([-5, 20], [-5, 20], color='black', ls='--')
 plt.ylabel('Predictions [activity]', fontproperties=fm.FontProperties(fname=f))
