@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
 -- Linear Regression Model with NumPy: Classical Solution
+Issue: Radon Contamination
 """
 # general libraries
 import os
@@ -17,27 +18,27 @@ set_style = style_setting.set_style
 # inputs to download the dataset
 DATASET_DIR = os.path.join('../datasets', 'radon')
 url_base = 'http://www.stat.columbia.edu/~gelman/arm/examples/radon/'
-# Alternative source:
+# alternative source:
 # url_base = ('https://raw.githubusercontent.com/pymc-devs/uq_chapter/master/reference/data/')
 
 rd = read_data(DATASET_DIR, url_base)
 radon_features, radon_labels, county_name = rd.create_dataset()
 
-# Data splitting
+# Split the dataset
 np.random.seed(42)
 rnd = np.random.rand(len(radon_features)) < 0.8
 # 80%
-train_x = radon_features[rnd]  # training dataset (features, i.e. inputs)
-train_y = radon_labels[rnd]  # training dataset (labels, i.e. outputs)
+train_x = radon_features[rnd]  # training dataset (features, or inputs)
+train_y = radon_labels[rnd]  # training dataset (labels, or outputs)
 # 20%
-test_x = radon_features[~rnd]  # testing dataset (features, i.e inputs)
-test_y = radon_labels[~rnd]  # testing dataset (labels, i.e. outputs)
+test_x = radon_features[~rnd]  # testing dataset (features, or inputs)
+test_y = radon_labels[~rnd]  # testing dataset (labels, or outputs)
 print('The training dataset dimensions are: ', train_x.shape)
 # The training dataset dimensions are:  (733, 4)
 print('The testing dataset dimensions are: ', test_x.shape)
 # The testing dataset dimensions are:  (186, 4)
 
-# Solution:
+# solution:
 # weights = (X^T * X)^{-1} * X^T * y
 
 # Get NumPy arrays from the DataFrame's columns
@@ -77,13 +78,13 @@ print(weights)
 # Predict radon activities with the built linear regression model
 test_predictions = X_test @ weights
 # Predictions vs. True Values PLOT
-f = set_style().set_general_style_parameters()
-fig = plt.figure()
+fp = set_style().set_general_style_parameters()
+plt.figure()
 plt.scatter(test_y, test_predictions, marker='o', c='blue')
 plt.plot([-5, 20], [-5, 20], color='black', ls='--')
-plt.ylabel('Predictions [activity]', fontproperties=fm.FontProperties(fname=f))
-plt.xlabel('True Values [activity]', fontproperties=fm.FontProperties(fname=f))
-plt.title('Linear Regression with NumPy', fontproperties=fm.FontProperties(fname=f))
+plt.ylabel('Predictions [activity]', fontproperties=fm.FontProperties(fname=fp))
+plt.xlabel('True Values [activity]', fontproperties=fm.FontProperties(fname=fp))
+plt.title('Linear Regression with NumPy', fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(-5, 20)
 plt.xlim(-5, 20)
 plt.axis(True)

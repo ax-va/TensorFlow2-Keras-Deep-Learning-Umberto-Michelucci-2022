@@ -1,13 +1,12 @@
-import os, sys, random
 import xml.etree.ElementTree as ET
 from glob import glob
 import pandas as pd
-from shutil import copyfile
+
 
 class read_data():
 
     def __init__(self):
-        self.annotations = glob('BCCD_Dataset/BCCD/Annotations/*.xml')
+        self.annotations = glob('../datasets/bccd/*.xml')
 
     def preprocess_bccd_dataset(self):
         """Download and preprocess the bccd dataset, generating a csv file.
@@ -35,6 +34,6 @@ class read_data():
                 df.append(row)
                 cnt += 1
 
-        data = pd.DataFrame(df, columns = ['filename', 'cell_type', 'xmin', 'xmax', 'ymin', 'ymax'])
+        data = pd.DataFrame(df, columns=['filename', 'cell_type', 'xmin', 'xmax', 'ymin', 'ymax'])
 
         return data
