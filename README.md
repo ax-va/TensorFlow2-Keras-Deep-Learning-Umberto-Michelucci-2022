@@ -3,7 +3,7 @@ Umberto Michelucci, "Applied Deep Learning with TensorFlow 2: Learn to Implement
 
 Useful links:
 
-Online version:
+Online book version:
 https://adl.toelt.ai
 
 Original GitHub by TOELT LLC:
