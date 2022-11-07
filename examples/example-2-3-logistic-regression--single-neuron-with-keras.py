@@ -57,10 +57,10 @@ print(bccd_labels.head())
 # Split the dataset
 np.random.seed(42)
 rnd = np.random.rand(len(bccd_features)) < 0.8
-# 80%
+# 80% of samples for training
 train_x = bccd_features[rnd]  # training dataset (features)
 train_y = bccd_labels[rnd]  # training dataset (labels)
-# 20 %
+# 20% of samples for test
 test_x = bccd_features[~rnd]  # testing dataset (features)
 test_y = bccd_labels[~rnd]  # testing dataset (labels)
 print('The training dataset dimensions are: ', train_x.shape)

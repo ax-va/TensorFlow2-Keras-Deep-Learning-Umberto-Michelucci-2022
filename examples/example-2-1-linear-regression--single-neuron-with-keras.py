@@ -79,10 +79,10 @@ print(radon_labels)
 # Split the dataset
 np.random.seed(42)
 rnd = np.random.rand(len(radon_features)) < 0.8
-# 80%
+# 80% of samples for training
 train_x = radon_features[rnd]  # training dataset (features, or inputs)
 train_y = radon_labels[rnd]  # training dataset (labels, or outputs)
-# 20%
+# 20% of samples for test
 test_x = radon_features[~rnd]  # testing dataset (features, or inputs)
 test_y = radon_labels[~rnd]  # testing dataset (labels, or outputs)
 print('The training dataset dimensions are: ', train_x.shape)
