@@ -6,7 +6,7 @@ Useful links:
 Online book version:
 https://adl.toelt.ai
 
-Original GitHub by TOELT LLC:
+Original GitHub of the online version of the book by TOELT LLC:
 https://github.com/toelt-llc/BOOK-ADL-Book-2nd-Ed
 
 Datasets:
