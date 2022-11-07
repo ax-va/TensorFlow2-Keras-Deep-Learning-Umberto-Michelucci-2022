@@ -38,7 +38,7 @@ print('The training dataset dimensions are: ', train_x.shape)
 print('The testing dataset dimensions are: ', test_x.shape)
 # The testing dataset dimensions are:  (186, 4)
 
-# solution:
+# Solution:
 # weights = (X^T * X)^{-1} * X^T * y
 
 # Get NumPy arrays from the DataFrame's columns
@@ -70,7 +70,7 @@ print(X_train)
 #  [ 0.       83.        0.913909  5.2       1.      ]
 #  [ 0.       84.        1.42659   8.        1.      ]]
 
-weights = (np.linalg.inv(X_train_T @ X_train) @ X_train_T) @ y_train
+weights = np.linalg.inv(X_train_T @ X_train) @ (X_train_T @ y_train)
 print(weights)
 # [-6.40856082e-01  2.70005349e-03  2.58521725e+00 -2.08834593e-01
 #   4.58390008e+00]
