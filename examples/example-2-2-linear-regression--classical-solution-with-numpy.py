@@ -18,7 +18,7 @@ set_style = style_setting.set_style
 # inputs to download the dataset
 DATASET_DIR = os.path.join('../datasets', 'radon')
 url_base = 'http://www.stat.columbia.edu/~gelman/arm/examples/radon/'
-# alternative source:
+# Alternative source:
 # url_base = ('https://raw.githubusercontent.com/pymc-devs/uq_chapter/master/reference/data/')
 
 rd = read_data(DATASET_DIR, url_base)
