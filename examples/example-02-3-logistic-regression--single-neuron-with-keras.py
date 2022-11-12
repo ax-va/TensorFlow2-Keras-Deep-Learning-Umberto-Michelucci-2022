@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
--- Logistic Regression with a Single Neuron
+-- Hands-on with a Single Neuron
+---- Logistic Regression with a Single Neuron
 Issue: Blood Cells Detection
 """
 # general libraries
@@ -131,7 +132,7 @@ plt.ylim(-5, 20)
 plt.xlim(0, 500)
 plt.axis(True)
 # plt.show()
-plt.savefig('../figures/figure-2-3.svg', bbox_inches='tight')
+plt.savefig('../figures/figure-02-3.svg', bbox_inches='tight')
 
 # Predict cell type with the built logistic regression model
 test_predictions = model.predict(test_x).flatten()
