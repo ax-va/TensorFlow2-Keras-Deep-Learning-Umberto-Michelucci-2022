@@ -130,8 +130,8 @@ gd_dict = {  # (batch_size, momentum, learning_rate)
     "stochastic gradient descent": (1, 0.9, 0.0001),
     "mini-batch gradient descent": (20, 0.9, 0.01)
 }
-for gd_name, hyperparams in gd_dict.items():
-    batch_size, momentum, learning_rate = hyperparams
+for gd_name, hyper_params in gd_dict.items():
+    batch_size, momentum, learning_rate = hyper_params
     print("Type of gradient descent:", gd_name)
     start_time = time.time()
     model = build_model(
