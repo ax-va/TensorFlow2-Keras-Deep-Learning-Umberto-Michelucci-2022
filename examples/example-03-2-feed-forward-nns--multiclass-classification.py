@@ -144,7 +144,7 @@ for gd_name, hyperparams in gd_dict.items():
       callbacks=[tfdocs.modeling.EpochDots()]
     )
     training_time = (time.time() - start_time) / 60
-    print("\n*********************************")
+    print("\n*****************************************************************")
     model.summary()
     hist = pd.DataFrame(result.history)
     hist['epoch'] = result.epoch
@@ -154,11 +154,11 @@ for gd_name, hyperparams in gd_dict.items():
     # Calculate accuracy on the dev dataset
     test_loss, test_accuracy = model.evaluate(data_test_norm, labels_test, verbose=0)
     print(f"The accuracy on the dev set is equal to: {int(test_accuracy*100)}%")
-    print("*********************************")
+    print("*****************************************************************")
 
 # Type of gradient descent: standard gradient descent
 # ...
-# *********************************
+# *****************************************************************
 # Model: "sequential"
 # _________________________________________________________________
 #  Layer (type)                Output Shape              Param #
@@ -180,10 +180,10 @@ for gd_name, hyperparams in gd_dict.items():
 # 99  1.649016              0.415300     99
 # This took 0.15 minutes
 # The accuracy on the dev set is equal to: 41%
-# *********************************
+# *****************************************************************
 # Type of gradient descent: stochastic gradient descent
 # ...
-# *********************************
+# *****************************************************************
 # Model: "sequential_1"
 # _________________________________________________________________
 #  Layer (type)                Output Shape              Param #
@@ -205,10 +205,10 @@ for gd_name, hyperparams in gd_dict.items():
 # 99  0.279381              0.899233     99
 # This took 82.29 minutes
 # The accuracy on the dev set is equal to: 86%
-# *********************************
+# *****************************************************************
 # Type of gradient descent: mini-batch gradient descent
 # ...
-# *********************************
+# *****************************************************************
 # Model: "sequential_2"
 # _________________________________________________________________
 #  Layer (type)                Output Shape              Param #
@@ -230,4 +230,4 @@ for gd_name, hyperparams in gd_dict.items():
 # 99  0.292305              0.891050     99
 # This took 4.67 minutes
 # The accuracy on the dev set is equal to: 84%
-# *********************************
+# *****************************************************************
