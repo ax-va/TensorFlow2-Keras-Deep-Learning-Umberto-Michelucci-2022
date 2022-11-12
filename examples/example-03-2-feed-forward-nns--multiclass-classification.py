@@ -144,7 +144,7 @@ for gd_name, hyperparams in gd_dict.items():
       callbacks=[tfdocs.modeling.EpochDots()]
     )
     training_time = (time.time() - start_time) / 60
-    print("\n*****************************************************************")
+    print("\n"+"*"*65)
     model.summary()
     hist = pd.DataFrame(result.history)
     hist['epoch'] = result.epoch
@@ -154,7 +154,7 @@ for gd_name, hyperparams in gd_dict.items():
     # Calculate accuracy on the dev dataset
     test_loss, test_accuracy = model.evaluate(data_test_norm, labels_test, verbose=0)
     print(f"The accuracy on the dev set is equal to: {int(test_accuracy*100)}%")
-    print("*****************************************************************")
+    print("*"*65)
 
 # Type of gradient descent: standard gradient descent
 # ...
