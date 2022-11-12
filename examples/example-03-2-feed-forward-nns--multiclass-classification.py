@@ -126,8 +126,8 @@ def build_model(opt):
 
 EPOCHS = 100
 gd_dict = {  # (batch_size, momentum, learning_rate)
-    # "standard gradient descent": (data_train_norm.shape[0], 0.0, 0.01),  # (60000, 0.0, 0.01)
-    # "stochastic gradient descent": (1, 0.9, 0.0001),
+    "standard gradient descent": (data_train_norm.shape[0], 0.0, 0.01),  # (60000, 0.0, 0.01)
+    "stochastic gradient descent": (1, 0.9, 0.0001),
     "mini-batch gradient descent": (20, 0.9, 0.01)
 }
 for gd_name, hyperparams in gd_dict.items():
@@ -206,7 +206,7 @@ for gd_name, hyperparams in gd_dict.items():
 # This took 82.29 minutes
 # The accuracy on the dev set is equal to: 86%
 # *********************************
-# Type of gradient descent: mini-batch
+# Type of gradient descent: mini-batch gradient descent
 # ...
 # *********************************
 # Model: "sequential_2"
