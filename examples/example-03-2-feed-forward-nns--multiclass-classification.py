@@ -15,7 +15,6 @@ import pandas as pd
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
 from random import *
 import time
 
@@ -105,23 +104,23 @@ plt.savefig('../figures/figure-03-2-2.svg', bbox_inches='tight')
 # Keras implementation:
 def build_model(opt):
     # Create model
-    neuron_model = keras.Sequential()
+    feed_forward_model = keras.Sequential()
     # Add first hidden layer and set input dimensions
-    neuron_model.add(layers.Dense(
+    feed_forward_model.add(layers.Dense(
         15,  # number of neurons
         input_dim=784,
         activation='relu'))
     # Add output layer
-    neuron_model.add(layers.Dense(
+    feed_forward_model.add(layers.Dense(
         10,  # number of neurons
         activation='softmax'))
     # Compile model
-    neuron_model.compile(
+    feed_forward_model.compile(
         loss='categorical_crossentropy',  # loss function
         optimizer=opt,
         metrics=['categorical_accuracy']  # accuracy metrics
     )
-    return neuron_model
+    return feed_forward_model
 
 
 EPOCHS = 100
