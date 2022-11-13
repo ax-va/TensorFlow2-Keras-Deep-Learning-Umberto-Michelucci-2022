@@ -15,7 +15,7 @@ Radon: http://www.stat.columbia.edu/~gelman/arm/examples/radon/
 
 BCCD: https://github.com/ax-va/BCCD_Dataset/tree/master/BCCD/Annotations/
 
-Zalando multiclass: https://www.kaggle.com/zalando-research/fashionmnist/data; https://github.com/zalandoresearch/fashion-mnist (convert with  https://pjreddie.com/projects/mnist-in-csv/); or download from keras.datasets (see in code)
+Zalando clothes: https://www.kaggle.com/zalando-research/fashionmnist/data; https://github.com/zalandoresearch/fashion-mnist (convert with  https://pjreddie.com/projects/mnist-in-csv/); or download from keras.datasets (see in code)
  
 http://www.image-net.org/
 
