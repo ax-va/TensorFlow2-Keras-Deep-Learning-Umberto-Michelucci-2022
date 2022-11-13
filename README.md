@@ -3,7 +3,7 @@ Examples from book: Umberto Michelucci, "Applied Deep Learning with TensorFlow 2
 
 Useful links:
 
-Online book version:
+Book's online version:
 https://adl.toelt.ai
 
 Original GitHub of the code by TOELT LLC:
