@@ -113,7 +113,7 @@ for params, color in [((10, 1), "black"), ((10, 2), "blue"), ((10, 3), "red"), (
         text_num_neurons = f'{params[0]} neurons'
     else:
         text_num_layers = f'{params[1]} layers'
-        text_num_neurons = f'{params[0]} neurons pro layer'
+        text_num_neurons = f'{params[0]} neurons per layer'
     ax.plot(history['epoch'], history['loss'], color=color, label=f'{text_num_layers}, {text_num_neurons}')
 plt.ylabel('Cost function $J$', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('Epochs', fontproperties=fm.FontProperties(fname=fp))
