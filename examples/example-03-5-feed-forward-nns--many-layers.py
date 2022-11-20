@@ -125,4 +125,4 @@ plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-03-5.svg', bbox_inches='tight')
 
-# The model with 4 layers, 100 neurons pro layer, is overfitted
+# The model with 4 layers and 100 neurons per layer is over fitted
