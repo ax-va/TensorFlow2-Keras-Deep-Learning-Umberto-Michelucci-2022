@@ -62,7 +62,8 @@ labels_test[np.arange(10000), test_y] = 1
 
 
 def build_and_train_model_with_layers(num_neurons, num_layers):
-    """ Build model """
+    """ Build and train model """
+    # Build model
     inputs = keras.Input(shape=784)  # input layer
     # customized number of layers and neurons per layer
     layer = inputs
