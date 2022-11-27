@@ -19,6 +19,8 @@ Zalando clothes images: https://www.kaggle.com/zalando-research/fashionmnist/dat
  
 http://www.image-net.org/
 
+Other links:
+
 IPython's magic commands:
 http://ipython.readthedocs.io/en/stable/interactive/magics.htm
 
