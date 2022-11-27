@@ -9,7 +9,7 @@ https://adl.toelt.ai
 Original GitHub of the code by TOELT LLC:
 https://github.com/toelt-llc/BOOK-ADL-Book-2nd-Ed
 
-# Datasets
+## Datasets
 
 Radon: http://www.stat.columbia.edu/~gelman/arm/examples/radon/
 
@@ -19,7 +19,7 @@ Zalando clothes images: https://www.kaggle.com/zalando-research/fashionmnist/dat
  
 http://www.image-net.org/
 
-# Other links
+## Other links
 
 IPython's magic commands:
 http://ipython.readthedocs.io/en/stable/interactive/magics.htm
