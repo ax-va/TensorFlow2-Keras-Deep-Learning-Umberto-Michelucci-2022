@@ -1,7 +1,7 @@
 # TensorFlow2-Keras-Michelucci-2022
 Examples from book: Umberto Michelucci, "Applied Deep Learning with TensorFlow 2: Learn to Implement Advanced Deep Learning Techniques with Python", Second Edition, Apress, 2022
 
-Original code:
+# Original code
 
 Book's online version:
 https://adl.toelt.ai
@@ -9,7 +9,7 @@ https://adl.toelt.ai
 Original GitHub of the code by TOELT LLC:
 https://github.com/toelt-llc/BOOK-ADL-Book-2nd-Ed
 
-Datasets:
+# Datasets
 
 Radon: http://www.stat.columbia.edu/~gelman/arm/examples/radon/
 
@@ -19,7 +19,7 @@ Zalando clothes images: https://www.kaggle.com/zalando-research/fashionmnist/dat
  
 http://www.image-net.org/
 
-Other links:
+# Other links
 
 IPython's magic commands:
 http://ipython.readthedocs.io/en/stable/interactive/magics.htm
