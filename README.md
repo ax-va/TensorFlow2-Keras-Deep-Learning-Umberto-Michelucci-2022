@@ -27,6 +27,4 @@ http://ipython.readthedocs.io/en/stable/interactive/magics.htm
 Kaggle's competitions:
 https://www.kaggle.com/competitions
 
-TensorFlow on AMD GPU (by using ROCm for Ubuntu):
-https://medium.com/analytics-vidhya/install-tensorflow-2-for-amd-gpus-87e8d7aeb812; 
-compability of ROCm and TensorFlow: https://github.com/ROCmSoftwarePlatform/tensorflow-upstream/blob/develop-upstream/rocm_docs/tensorflow-rocm-release.md
+TensorFlow on AMD GPU (by using ROCm for Linux only); install ROCm: https://rocmdocs.amd.com/en/latest/Installation_Guide/Installation_new.html#rocm-installation-guide-v5-0; compability of ROCm and TensorFlow: https://github.com/ROCmSoftwarePlatform/tensorflow-upstream/blob/develop-upstream/rocm_docs/tensorflow-rocm-release.md
