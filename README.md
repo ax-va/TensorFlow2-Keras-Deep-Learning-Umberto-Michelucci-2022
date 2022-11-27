@@ -24,3 +24,6 @@ http://ipython.readthedocs.io/en/stable/interactive/magics.htm
 
 Kaggle's competitions:
 https://www.kaggle.com/competitions
+
+TensorFlow on AMD GPU:
+https://medium.com/analytics-vidhya/install-tensorflow-2-for-amd-gpus-87e8d7aeb812
