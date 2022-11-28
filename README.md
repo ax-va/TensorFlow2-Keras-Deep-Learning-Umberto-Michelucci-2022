@@ -6,7 +6,7 @@ Examples from book: Umberto Michelucci, "Applied Deep Learning with TensorFlow 2
 Book's online version:
 https://adl.toelt.ai
 
-Original GitHub of the code by TOELT LLC:
+Original GitHub by TOELT LLC:
 https://github.com/toelt-llc/BOOK-ADL-Book-2nd-Ed
 
 ## Datasets
