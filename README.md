@@ -11,7 +11,7 @@ https://github.com/toelt-llc/BOOK-ADL-Book-2nd-Ed
 
 ## Datasets
 
-Radon: http://www.stat.columbia.edu/~gelman/arm/examples/radon/
+Radon activity: http://www.stat.columbia.edu/~gelman/arm/examples/radon/
 
 BCCD: https://github.com/ax-va/BCCD_Dataset/tree/master/BCCD/Annotations/
 
