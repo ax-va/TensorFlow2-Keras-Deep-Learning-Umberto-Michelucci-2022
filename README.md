@@ -21,7 +21,7 @@ MNIST handwritten digits: http://yann.lecun.com/exdb/mnist/ (download from Keras
  
 http://www.image-net.org/
 
-## Useful
+## Useful links
 
 IPython's magic commands:
 http://ipython.readthedocs.io/en/stable/interactive/magics.htm
