@@ -19,7 +19,7 @@ Zalando clothes images: https://www.kaggle.com/zalando-research/fashionmnist/dat
 
 MNIST handwritten digits: http://yann.lecun.com/exdb/mnist/ (download from Keras: (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data())
 
-Boston area housing: http://lib.stat.cmu.edu/datasets/boston
+Boston area housing: http://lib.stat.cmu.edu/datasets/boston; https://archive.ics.uci.edu/ml/machine-learning-databases/housing/
  
 http://www.image-net.org/
 

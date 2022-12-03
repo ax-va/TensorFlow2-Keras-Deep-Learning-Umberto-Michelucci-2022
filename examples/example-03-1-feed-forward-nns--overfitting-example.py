@@ -78,5 +78,3 @@ plt.xlim(-6, 6)
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-03-1-4.svg', bbox_inches='tight')
-
-

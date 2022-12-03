@@ -77,7 +77,7 @@ print(radon_labels)
 # Name: radon, Length: 919, dtype: float64
 
 # Split the dataset
-np.random.seed(42)
+np.random.seed(42)  # reproducible random
 rnd = np.random.rand(len(radon_features)) < 0.8
 # 80% of samples for training
 train_x = radon_features[rnd]  # training dataset (features, or inputs)

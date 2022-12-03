@@ -3,6 +3,7 @@
 -- Feed-Forward Neural Networks
 ---- Multiclass Classification with Feed-Forward Neural Networks
 ------ Adding Many Layers Efficiently
+ Issue: Clothes images recognition
 
 The dataset has 785 columns, where the first column is the class label
 (an integer going from 0 to 9) and the remaining 784 contain the pixel
@@ -16,7 +17,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-import time
 
 # tensorflow libraries
 from tensorflow import keras
@@ -85,10 +85,9 @@ def build_and_train_model_with_layers(num_neurons, num_layers):
         batch_size=20,
         callbacks=[tfdocs.modeling.EpochDots()]
     )
-    # Save performances
-    df_history = pd.DataFrame(result.history)
-    df_history['epoch'] = result.epoch
-    return df_history, model
+    history = pd.DataFrame(result.history)
+    history['epoch'] = result.epoch
+    return history, model
 
 
 history_dict = {}
@@ -106,16 +105,15 @@ for num_n, num_l in [(10, 1), (10, 2), (10, 3), (10, 4), (100, 4)]:
 
 fp = set_style().set_general_style_parameters()
 fig = plt.figure()
-ax = fig.add_subplot(111)
 for params, color in [((10, 1), "black"), ((10, 2), "blue"), ((10, 3), "red"), ((10, 4), "green"), ((100, 4), "magenta")]:
-    history = history_dict[params]
+    df_history = history_dict[params]
     if params[1] == 1:
         text_num_layers = f'{params[1]} layer'
         text_num_neurons = f'{params[0]} neurons'
     else:
         text_num_layers = f'{params[1]} layers'
         text_num_neurons = f'{params[0]} neurons per layer'
-    ax.plot(history['epoch'], history['loss'], color=color, label=f'{text_num_layers}, {text_num_neurons}')
+    plt.plot(df_history['epoch'], df_history['loss'], color=color, label=f'{text_num_layers}, {text_num_neurons}')
 plt.ylabel('Cost function $J$', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('Epochs', fontproperties=fm.FontProperties(fname=fp))
 plt.legend(loc='best')

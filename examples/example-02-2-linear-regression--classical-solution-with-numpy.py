@@ -25,7 +25,7 @@ rd = read_data(DATASET_DIR, url_base)
 radon_features, radon_labels, county_name = rd.create_dataset()
 
 # Split the dataset
-np.random.seed(42)
+np.random.seed(42)  # reproducible random
 rnd = np.random.rand(len(radon_features)) < 0.8
 # 80% of samples for training
 train_x = radon_features[rnd]  # training dataset (features, or inputs)

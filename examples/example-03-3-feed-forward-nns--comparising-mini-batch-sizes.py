@@ -3,6 +3,7 @@
 -- Feed-Forward Neural Networks
 ---- Multiclass Classification with Feed-Forward Neural Networks
 ------ Comparison of Mini-Batch Sizes
+Issue: Clothes images recognition
 
 The dataset has 785 columns, where the first column is the class label
 (an integer going from 0 to 9) and the remaining 784 contain the pixel

@@ -3,6 +3,7 @@
 -- Feed-Forward Neural Networks
 ---- Multiclass Classification with Feed-Forward Neural Networks
 ------ Weight Initialization
+ Issue: Clothes images recognition
 
 The dataset has 785 columns, where the first column is the class label
 (an integer going from 0 to 9) and the remaining 784 contain the pixel
@@ -147,13 +148,13 @@ for mb_size in [200, 100, 50, 20, 10, 5]:
 # ...
 # Execution time in minutes: 66.13
 
-"""
-history_dict = {}
-for mb_size in [200, 100, 50, 20, 10, 5]:
-    df_history = pd.read_csv(f"../histories/history-03-4-mb_size-{mb_size}.csv")
-    history_dict[mb_size] = df_history
-execution_time_dict = {200: 0.63, 100: 1.13, 50: 2.06, 20: 4.54, 10: 8.62, 5: 66.13}
-"""
+
+# history_dict = {}
+# for mb_size in [200, 100, 50, 20, 10, 5]:
+#     df_history = pd.read_csv(f"../histories/history-03-4-mb_size-{mb_size}.csv")
+#     history_dict[mb_size] = df_history
+# execution_time_dict = {200: 0.63, 100: 1.13, 50: 2.06, 20: 4.54, 10: 8.62, 5: 66.13}
+
 
 fp = set_style().set_general_style_parameters()
 fig = plt.figure()
@@ -181,13 +182,12 @@ for mb_size in [200, 100, 50, 20, 10, 5]:
     labels.append(mb_size)
 
 fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.scatter(times, costs,  color='blue')
+plt.scatter(times, costs,  color='blue')
 plt.ylabel('Cost function $J$ after 100 epochs', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('Time (minutes)', fontproperties=fm.FontProperties(fname=fp))
 plt.title('ReLU with He init', fontproperties=fm.FontProperties(fname=fp))
 for i, txt in enumerate(labels):
-    ax.annotate(txt, (times[i] + 1.0, costs[i]))
+    plt.annotate(txt, (times[i] + 1.0, costs[i]))
 plt.ylim(0.30, 0.60)
 plt.xlim(0, 70)
 plt.axis(True)

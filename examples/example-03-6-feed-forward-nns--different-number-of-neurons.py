@@ -3,6 +3,7 @@
 -- Feed-Forward Neural Networks
 ---- Multiclass Classification with Feed-Forward Neural Networks
 ------ Comparing Different Networks
+ Issue: Clothes images recognition
 
 The dataset has 785 columns, where the first column is the class label
 (an integer going from 0 to 9) and the remaining 784 contain the pixel
@@ -16,7 +17,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-import time
 
 # tensorflow libraries
 from tensorflow import keras
@@ -85,10 +85,9 @@ def build_and_train_model_with_layers(num_neurons, num_layers):
         batch_size=20,
         callbacks=[tfdocs.modeling.EpochDots()]
     )
-    # Save performances
-    df_history = pd.DataFrame(result.history)
-    df_history['epoch'] = result.epoch
-    return df_history, model
+    history = pd.DataFrame(result.history)
+    history['epoch'] = result.epoch
+    return history, model
 
 
 # history_dict = {}
@@ -106,21 +105,20 @@ for num_n, num_l in [(1, 1), (2, 1), (3, 1), (5, 1), (10, 1), (20, 1)]:
 
 fp = set_style().set_general_style_parameters()
 fig = plt.figure()
-ax = fig.add_subplot(111)
 for params, color in [((1, 1), "black"),
                       ((2, 1), "blue"),
                       ((3, 1), "red"),
                       ((5, 1), "green"),
                       ((10, 1), "magenta"),
                       ((20, 1), "yellow")]:
-    history = history_dict[params]
+    df_history = history_dict[params]
     if params[1] == 1:
         text_num_layers = f'{params[1]} layer'
         text_num_neurons = f'{params[0]} neuron' if params[0] == 1 else f'{params[0]} neurons'
     else:
         text_num_layers = f'{params[1]} layers'
         text_num_neurons = f'{params[0]} neuron per layer' if params[0] == 1 else f'{params[0]} neurons per layer'
-    ax.plot(history['epoch'], history['loss'], color=color, label=f'{text_num_layers}, {text_num_neurons}')
+    plt.plot(df_history['epoch'], df_history['loss'], color=color, label=f'{text_num_layers}, {text_num_neurons}')
 plt.ylabel('Cost function $J$', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('Epochs', fontproperties=fm.FontProperties(fname=fp))
 plt.legend(loc='best')

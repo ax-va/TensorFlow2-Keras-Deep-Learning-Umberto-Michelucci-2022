@@ -56,7 +56,7 @@ print(bccd_labels.head())
 # 4    RBC
 
 # Split the dataset
-np.random.seed(42)
+np.random.seed(42) # reproducible random
 rnd = np.random.rand(len(bccd_features)) < 0.8
 # 80% of samples for training
 train_x = bccd_features[rnd]  # training dataset (features)
