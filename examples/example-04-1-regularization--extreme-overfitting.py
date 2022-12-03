@@ -3,8 +3,6 @@
 -- Regularization
 Issue: Boston area housing and house pricing
 """
-import pickle
-
 # general libraries
 import pandas as pd
 import numpy as np
