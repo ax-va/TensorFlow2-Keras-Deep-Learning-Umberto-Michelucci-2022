@@ -19,7 +19,7 @@ import tensorflow_docs.modeling
 import importlib
 set_style = importlib.import_module("ADL-Book-2nd-Ed.modules.style_setting").set_style
 
-# # Import the dataset
+# # Import the dataset from scikit-learn
 # from sklearn.datasets import load_boston
 # boston = load_boston()
 # features = np.array(boston.data)
