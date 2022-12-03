@@ -17,7 +17,10 @@ BCCD (blood cells): https://github.com/ax-va/BCCD_Dataset/tree/master/BCCD/Annot
 
 Zalando clothes images: https://www.kaggle.com/zalando-research/fashionmnist/data; https://github.com/zalandoresearch/fashion-mnist (convert with  https://pjreddie.com/projects/mnist-in-csv/); or download from keras.datasets (used in code)
 
-MNIST handwritten digits: http://yann.lecun.com/exdb/mnist/ (download from Keras: (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data())
+MNIST handwritten digits: http://yann.lecun.com/exdb/mnist/ (download from Keras: 
+```python
+(x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data())
+```
 
 Boston area housing: http://lib.stat.cmu.edu/datasets/boston; https://archive.ics.uci.edu/ml/machine-learning-databases/housing/
  
