@@ -84,7 +84,7 @@ print(dev_y.shape)
 # (107,)
 
 
-def create_and_train_model_nlayers(data_train_norm, labels_train, data_dev_norm, labels_dev, num_neurons, num_layers):
+def create_and_train_model(data_train_norm, labels_train, data_dev_norm, labels_dev, num_neurons, num_layers):
     """
     This function builds and trains a feed-forward neural network model and evaluates it on the training and dev sets.
     """
@@ -118,7 +118,7 @@ def create_and_train_model_nlayers(data_train_norm, labels_train, data_dev_norm,
 
 
 num_l, num_n = 4, 20
-# hist, model = create_and_train_model_nlayers(train_x, train_y, dev_x, dev_y, num_neurons=num_n, num_layers=num_l)
+# hist, model = create_and_train_model(train_x, train_y, dev_x, dev_y, num_neurons=num_n, num_layers=num_l)
 # print(type(hist))  # <class 'pandas.core.frame.DataFrame'>
 # print(type(model))  # <class 'keras.engine.functional.Functional'>
 # hist.to_csv(f"../histories/history-04-1-num_n-{num_n}-num_l-{num_l}.csv")

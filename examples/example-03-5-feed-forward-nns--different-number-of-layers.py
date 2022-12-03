@@ -61,7 +61,7 @@ labels_test = np.zeros((10000, 10))
 labels_test[np.arange(10000), test_y] = 1
 
 
-def build_and_train_model_with_layers(num_neurons, num_layers):
+def build_and_train_model(num_neurons, num_layers):
     """ Build and train model """
     # Build model
     inputs = keras.Input(shape=784)  # input layer
@@ -90,17 +90,17 @@ def build_and_train_model_with_layers(num_neurons, num_layers):
     return history, model
 
 
-history_dict = {}
-for num_n, num_l in [(10, 1), (10, 2), (10, 3), (10, 4), (100, 4)]:
-    df_history, model = build_and_train_model_with_layers(num_neurons=num_n, num_layers=num_l)
-    history_dict[(num_n, num_l)] = df_history
-    df_history.to_csv(f"../histories/history-03-5-num_n-{num_n}-num_l-{num_l}.csv")
-
-
 # history_dict = {}
 # for num_n, num_l in [(10, 1), (10, 2), (10, 3), (10, 4), (100, 4)]:
-#     df_history = pd.read_csv(f"../histories/history-03-5-num_n-{num_n}-num_l-{num_l}.csv")
+#     df_history, model = build_and_train_model(num_neurons=num_n, num_layers=num_l)
 #     history_dict[(num_n, num_l)] = df_history
+#     df_history.to_csv(f"../histories/history-03-5-num_n-{num_n}-num_l-{num_l}.csv")
+
+
+history_dict = {}
+for num_n, num_l in [(10, 1), (10, 2), (10, 3), (10, 4), (100, 4)]:
+    df_history = pd.read_csv(f"../histories/history-03-5-num_n-{num_n}-num_l-{num_l}.csv")
+    history_dict[(num_n, num_l)] = df_history
 
 
 fp = set_style().set_general_style_parameters()

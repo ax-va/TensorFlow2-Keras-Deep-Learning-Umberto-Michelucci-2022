@@ -61,7 +61,7 @@ labels_test = np.zeros((10000, 10))
 labels_test[np.arange(10000), test_y] = 1
 
 
-def build_and_train_model_with_layers(num_neurons, num_layers):
+def build_and_train_model(num_neurons, num_layers):
     """ Build and train model """
     # Build model
     inputs = keras.Input(shape=784)  # input layer
@@ -92,7 +92,7 @@ def build_and_train_model_with_layers(num_neurons, num_layers):
 
 # history_dict = {}
 # for num_n, num_l in [(1, 1), (2, 1), (3, 1), (5, 1), (10, 1), (20, 1)]:
-#     df_history, model = build_and_train_model_with_layers(num_neurons=num_n, num_layers=num_l)
+#     df_history, model = build_and_train_model(num_neurons=num_n, num_layers=num_l)
 #     history_dict[(num_n, num_l)] = df_history
 #     df_history.to_csv(f"../histories/history-03-6-num_n-{num_n}-num_l-{num_l}.csv")
 

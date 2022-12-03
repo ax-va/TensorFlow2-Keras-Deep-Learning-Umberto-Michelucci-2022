@@ -111,55 +111,38 @@ def execute_mini_batch_gradient_descent(mini_batch_size):
     return hist_mbgd
 
 
-history_dict = {}
-execution_time_dict = {}
-for mb_size in [200, 100, 50, 20, 10, 5]:
-    print("*" * 65)
-    print("Mini-batch size:", mb_size)
-    start = time.time()
-    df_history = execute_mini_batch_gradient_descent(mb_size)
-    history_dict[mb_size] = df_history
-    execution_time = (time.time() - start) / 60
-    execution_time_dict[mb_size] = execution_time
-    print(f"\nExecution time in minutes: {execution_time:.2f}")
-    df_history.to_csv(f"../histories/history-03-4-mb_size-{mb_size}.csv")
-# *****************************************************************
-# Mini-batch size: 200
-# ...
-# Execution time in minutes: 0.63
-# *****************************************************************
-# Mini-batch size: 100
-# ...
-# Execution time in minutes: 1.13
-# *****************************************************************
-# Mini-batch size: 50
-# ...
-# Execution time in minutes: 2.06
-# *****************************************************************
-# Mini-batch size: 20
-# ...
-# Execution time in minutes: 4.54
-# *****************************************************************
-# Mini-batch size: 10
-# ...
-# Execution time in minutes: 8.62
-# *****************************************************************
-# Mini-batch size: 5
-# ...
-# Execution time in minutes: 66.13
-
+mb_sizes = [200, 100, 50, 20, 10, 5]
 
 # history_dict = {}
-# for mb_size in [200, 100, 50, 20, 10, 5]:
-#     df_history = pd.read_csv(f"../histories/history-03-4-mb_size-{mb_size}.csv")
+# execution_time_dict = {}
+# for mb_size in mb_sizes:  # [200, 100, 50, 20, 10, 5]
+#     print("*" * 65)
+#     print("Mini-batch size:", mb_size)
+#     start = time.time()
+#     df_history = execute_mini_batch_gradient_descent(mb_size)
 #     history_dict[mb_size] = df_history
-# execution_time_dict = {200: 0.63, 100: 1.13, 50: 2.06, 20: 4.54, 10: 8.62, 5: 66.13}
+#     execution_time = (time.time() - start) / 60
+#     execution_time_dict[mb_size] = execution_time
+#     print(f"\nExecution time in minutes: {execution_time:.2f}")
+#     df_history.to_csv(f"../histories/history-03-4-mb_size-{mb_size}.csv")
+#     pd.DataFrame(
+#         data=execution_time_dict.items(),
+#         columns=['mini_batch_size', 'exec_time_in_minutes'],
+#     ).set_index('mini_batch_size').to_csv("../histories/history-03-4-mb_size-exec_time.csv")
 
+history_dict = {}
+for mb_size in mb_sizes:
+    df_history = pd.read_csv(f"../histories/history-03-4-mb_size-{mb_size}.csv")
+    history_dict[mb_size] = df_history
+execution_time_dict = pd.read_csv(
+    "../histories/history-03-4-mb_size-exec_time.csv",
+    index_col="mini_batch_size"
+)["exec_time_in_minutes"].to_dict()
 
 fp = set_style().set_general_style_parameters()
 fig = plt.figure()
 ax = fig.add_subplot(111)
-for mb_size, color in [(200, "black"), (100, "blue"), (50, "red"), (20, "green"), (10, "magenta"), (5, "yellow")]:
+for mb_size, color in zip(mb_sizes, ["black", "blue", "red", "green", "magenta", "yellow"]):
     history = history_dict[mb_size]
     ax.plot(history['epoch'], history['loss'], color=color, label=f'Mini-batch size: {mb_size}')
 plt.ylabel('Cost function $J$', fontproperties=fm.FontProperties(fname=fp))
@@ -189,7 +172,7 @@ plt.title('ReLU with He init', fontproperties=fm.FontProperties(fname=fp))
 for i, txt in enumerate(labels):
     plt.annotate(txt, (times[i] + 1.0, costs[i]))
 plt.ylim(0.30, 0.60)
-plt.xlim(0, 70)
+plt.xlim(0, 20)
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-03-4-2.svg', bbox_inches='tight')
