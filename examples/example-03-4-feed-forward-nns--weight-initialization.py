@@ -125,10 +125,10 @@ mb_sizes = [200, 100, 50, 20, 10, 5]
 #     execution_time_dict[mb_size] = execution_time
 #     print(f"\nExecution time in minutes: {execution_time:.2f}")
 #     df_history.to_csv(f"../histories/history-03-4-mb_size-{mb_size}.csv")
-#     pd.DataFrame(
-#         data=execution_time_dict.items(),
-#         columns=['mini_batch_size', 'exec_time_in_minutes'],
-#     ).set_index('mini_batch_size').to_csv("../histories/history-03-4-mb_size-exec_time.csv")
+# pd.DataFrame(
+#     data=execution_time_dict.items(),
+#     columns=['mini_batch_size', 'exec_time_in_minutes'],
+# ).set_index('mini_batch_size').to_csv("../histories/history-03-4-mb_size-exec_time.csv")
 
 history_dict = {}
 for mb_size in mb_sizes:
@@ -140,11 +140,10 @@ execution_time_dict = pd.read_csv(
 )["exec_time_in_minutes"].to_dict()
 
 fp = set_style().set_general_style_parameters()
-fig = plt.figure()
-ax = fig.add_subplot(111)
+plt.figure()
 for mb_size, color in zip(mb_sizes, ["black", "blue", "red", "green", "magenta", "yellow"]):
     history = history_dict[mb_size]
-    ax.plot(history['epoch'], history['loss'], color=color, label=f'Mini-batch size: {mb_size}')
+    plt.plot(history['epoch'], history['loss'], color=color, label=f'Mini-batch size: {mb_size}')
 plt.ylabel('Cost function $J$', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('Epochs', fontproperties=fm.FontProperties(fname=fp))
 plt.title('ReLU with He init', fontproperties=fm.FontProperties(fname=fp))
@@ -164,13 +163,13 @@ for mb_size in [200, 100, 50, 20, 10, 5]:
     costs.append(history["loss"].values[-1])
     labels.append(mb_size)
 
-fig = plt.figure()
+plt.figure()
 plt.scatter(times, costs,  color='blue')
 plt.ylabel('Cost function $J$ after 100 epochs', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('Time (minutes)', fontproperties=fm.FontProperties(fname=fp))
 plt.title('ReLU with He init', fontproperties=fm.FontProperties(fname=fp))
 for i, txt in enumerate(labels):
-    plt.annotate(txt, (times[i] + 1.0, costs[i]))
+    plt.annotate(txt, (times[i] + 0.3, costs[i]))
 plt.ylim(0.30, 0.60)
 plt.xlim(0, 20)
 plt.axis(True)
