@@ -187,6 +187,9 @@ weights2_not_reg = model_not_reg.layers[2].get_weights()
 weights3_not_reg = model_not_reg.layers[3].get_weights()
 weights4_not_reg = model_not_reg.layers[4].get_weights()
 
+print(type(weights1_not_reg[0]))  # <class 'numpy.ndarray'>
+print(type(weights1_not_reg[1]))  # <class 'numpy.ndarray'>
+
 print(weights1_not_reg[0].shape)  # 13 features to each of 20 neurons
 # (13, 20)
 print(weights1_not_reg[1].shape)  # 1 bias to each of 20 neurons
@@ -250,3 +253,41 @@ plt.xticks(fontproperties=fm.FontProperties(fname=fp))
 plt.yticks(fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(0, 400)
 plt.savefig('../figures/figure-04-2-3.svg', bbox_inches='tight')
+
+print(f"Percent of weight less than 1e−3 for λ = {reg_lambdas[0]}")
+print('First hidden layer:')
+print(f"{(np.sum(np.abs(weights1_not_reg[0]) < 1e-3)) / weights1_not_reg[0].size * 100.0:.2f}%")
+print('Second hidden layer:')
+print(f"{(np.sum(np.abs(weights2_not_reg[0]) < 1e-3)) / weights2_not_reg[0].size * 100.0:.2f}%")
+print('Third hidden layer:')
+print(f"{(np.sum(np.abs(weights3_not_reg[0]) < 1e-3)) / weights3_not_reg[0].size * 100.0:.2f}%")
+print('Fourth hidden layer:')
+print(f"{(np.sum(np.abs(weights4_not_reg[0]) < 1e-3)) / weights4_not_reg[0].size * 100.0:.2f}%")
+# Percent of weight less than 1e−3 for λ = 0.0
+# First hidden layer:
+# 0.00%
+# Second hidden layer:
+# 0.50%
+# Third hidden layer:
+# 0.00%
+# Fourth hidden layer:
+# 0.25%
+
+print(f"Percent of weight less than 1e−3 for λ = {reg_lambdas[1]}")
+print('First hidden layer:')
+print(f"{(np.sum(np.abs(weights1_reg[0]) < 1e-3)) / weights1_reg[0].size * 100.0:.2f}%")
+print('Second hidden layer:')
+print(f"{(np.sum(np.abs(weights2_reg[0]) < 1e-3)) / weights2_reg[0].size * 100.0:.2f}%")
+print('Third hidden layer:')
+print(f"{(np.sum(np.abs(weights3_reg[0]) < 1e-3)) / weights3_reg[0].size * 100.0:.2f}%")
+print('Fourth hidden layer:')
+print(f"{(np.sum(np.abs(weights4_reg[0]) < 1e-3)) / weights4_reg[0].size * 100.0:.2f}%")
+# Percent of weight less than 1e−3 for λ = 10.0
+# First hidden layer:
+# 3.85%
+# Second hidden layer:
+# 61.50%
+# Third hidden layer:
+# 78.25%
+# Fourth hidden layer:
+# 75.25%
