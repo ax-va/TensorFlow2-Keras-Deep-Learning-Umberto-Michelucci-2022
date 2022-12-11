@@ -185,8 +185,9 @@ def plot_decision_boundary(xx, yy, z, features, target, file, title):
 
 num_n, num_l, num_epochs = 20, 4, 100
 
+l2_reg_lambdas = [0.0, 0.001, 0.002, 0.005, 0.01, 0.02]
 index = 1
-for l2_reg_lambda in [0.0, 0.001, 0.005, 0.01, 0.02]:
+for l2_reg_lambda in l2_reg_lambdas:
     hist_reg, model_reg = create_and_train_regularized_model(
         train_x, train_y,
         num_neurons=num_n, num_layers=num_l,
