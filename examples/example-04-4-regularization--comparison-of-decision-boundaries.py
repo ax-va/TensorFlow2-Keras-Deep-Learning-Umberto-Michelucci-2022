@@ -170,9 +170,9 @@ def plot_decision_boundary(xx, yy, z, features, target, file, title):
     features, target: the training points
     """
     plt.figure(figsize=(9, 7))
-    plt.pcolormesh(xx, yy, z, cmap='Greys', alpha=0.1)
+    plt.pcolormesh(xx, yy, z, cmap='Greys', alpha=0.5)
     # Plot also the training points
-    plt.scatter(features[:, 0], features[:, 1], c=target*100, edgecolors='k', s=40, cmap='gray')
+    plt.scatter(features[:, 0], features[:, 1], c=target, edgecolors='k', s=40, cmap='gray')
     plt.xlabel('$x$')
     plt.ylabel('$y$')
     plt.title(title)
@@ -197,7 +197,7 @@ for l2_reg_lambda in [0.0, 0.001, 0.005, 0.01, 0.02]:
     plot_decision_boundary(
         xx, yy, z, train_x, train_y,
         file=f'../figures/figure-04-4-{index}.png',
-        title=f"Decision Boundary by $L_2$ Regularization: $\lambda={l2_reg_lambda}$"
+        title=f"Decision Boundary by $L_2$ Regularization with $\lambda={l2_reg_lambda}$"
     )
     index += 1
 
