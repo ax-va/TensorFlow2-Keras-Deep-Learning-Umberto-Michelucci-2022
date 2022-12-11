@@ -197,7 +197,7 @@ for l2_reg_lambda in [0.0, 0.001, 0.005, 0.01, 0.02]:
     plot_decision_boundary(
         xx, yy, z, train_x, train_y,
         file=f'../figures/figure-04-4-{index}.png',
-        title=f"Decision Boundary with $L_2$ Regularization: $\lambda={l2_reg_lambda}$"
+        title=f"Decision Boundary by $L_2$ Regularization: $\lambda={l2_reg_lambda}$"
     )
     index += 1
 
@@ -208,5 +208,5 @@ xx, yy, z = make_mesh_predict(0.001, train_x, logreg)
 plot_decision_boundary(
     xx, yy, z, train_x, train_y,
     file=f'../figures/figure-04-4-{index}.png',
-    title=f"Decision Boundary with Logistic Regression"
+    title=f"Decision Boundary by Logistic Regression"
 )
