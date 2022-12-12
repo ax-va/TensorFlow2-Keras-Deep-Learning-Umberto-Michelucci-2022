@@ -2,7 +2,7 @@
 """
 -- Regularization
 ---- L2 Regularization
-Issue: Random two-features data with binary outputs
+Issue: Random two-features data with the binary target
 """
 # general libraries
 import pandas as pd
