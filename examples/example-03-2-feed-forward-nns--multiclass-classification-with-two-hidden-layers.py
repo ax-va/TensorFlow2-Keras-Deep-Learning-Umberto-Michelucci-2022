@@ -29,6 +29,7 @@ from random import *
 from keras.datasets import fashion_mnist
 import tensorflow as tf
 
+# my module
 import utils.feed_forward as feed_forward
 
 # train_x, test_x contain pixels.
