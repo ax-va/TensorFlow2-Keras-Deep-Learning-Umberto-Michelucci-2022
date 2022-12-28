@@ -2,7 +2,7 @@
 """
 -- Regularization
 ---- L2 Regularization
-Issue: Random two-features data with binary outputs
+Issue: Random two-features data with the binary target
 """
 # general libraries
 import pandas as pd
@@ -107,8 +107,8 @@ def create_and_train_regularized_model(data_train_norm, labels_train, num_neuron
         data_train_norm, labels_train,
         epochs=num_epochs, verbose=0,
         batch_size=data_train_norm.shape[0])
-
-    # save performances
+    #
+    #
     hist = pd.DataFrame(history.history)
     hist['epoch'] = history.epoch
     return hist, model
