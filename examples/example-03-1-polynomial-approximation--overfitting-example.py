@@ -40,6 +40,7 @@ plt.xlim(-6, 6)
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-03-1-1.svg', bbox_inches='tight')
+plt.close()
 
 
 def poly_func_1(t, p_0, p_1):
@@ -58,6 +59,7 @@ plt.xlim(-6, 6)
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-03-1-2.svg', bbox_inches='tight')
+plt.close()
 
 popt, pcov = curve_fit(poly_func_2, x, y)
 print("popt", popt)  # popt [1.94410716 1.96932697 2.89079599]
@@ -72,6 +74,7 @@ plt.xlim(-6, 6)
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-03-1-3.svg', bbox_inches='tight')
+plt.close()
 
 
 def poly_func_11(t, p_0, p_1, p_2, p_3, p_4, p_5, p_6, p_7, p_8, p_9, p_10, p_11):
@@ -90,3 +93,4 @@ plt.xlim(-6, 6)
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-03-1-4.svg', bbox_inches='tight')
+plt.close()

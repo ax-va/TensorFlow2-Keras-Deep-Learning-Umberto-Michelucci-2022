@@ -68,8 +68,24 @@ data_test_norm = np.array(data_test/255.0)
 # Hot-one encoding for labels:
 labels_train = np.zeros((60000, 10))
 labels_train[np.arange(60000), train_y] = 1
+print(labels_train)
+# [[0. 0. 0. ... 0. 0. 1.]
+#  [1. 0. 0. ... 0. 0. 0.]
+#  [1. 0. 0. ... 0. 0. 0.]
+#  ...
+#  [0. 0. 0. ... 0. 0. 0.]
+#  [1. 0. 0. ... 0. 0. 0.]
+#  [0. 0. 0. ... 0. 0. 0.]]
 labels_test = np.zeros((10000, 10))
 labels_test[np.arange(10000), test_y] = 1
+print(labels_test)
+# [[0. 0. 0. ... 0. 0. 1.]
+#  [0. 0. 1. ... 0. 0. 0.]
+#  [0. 1. 0. ... 0. 0. 0.]
+#  ...
+#  [0. 0. 0. ... 0. 1. 0.]
+#  [0. 1. 0. ... 0. 0. 0.]
+#  [0. 0. 0. ... 0. 0. 0.]]
 
 idx = 5
 plt.imshow(data_train_norm[idx, :].reshape(28, 28), cmap=matplotlib.cm.binary, interpolation='nearest')
@@ -77,6 +93,7 @@ plt.axis("on")
 plt.title(label_dict[train_y[idx]])
 # plt.show()
 plt.savefig('../figures/figure-03-2-1.svg', bbox_inches='tight')
+plt.close()
 
 
 def get_random_element_with_label(data, lbls, lbl):
@@ -105,6 +122,7 @@ for i in range(0, 10):
     plt.imshow(digit_image, cmap=matplotlib.cm.binary, interpolation="nearest")
     plt.axis("off")
 plt.savefig('../figures/figure-03-2-2.svg', bbox_inches='tight')
+plt.close()
 
 
 EPOCHS = 100

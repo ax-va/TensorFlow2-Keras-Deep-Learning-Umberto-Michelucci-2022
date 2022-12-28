@@ -141,6 +141,7 @@ plt.xlim(0, 500)
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-02-3.svg', bbox_inches='tight')
+plt.close()
 
 # Predict cell type with the built logistic regression model
 test_predictions = model.predict(test_x).flatten()

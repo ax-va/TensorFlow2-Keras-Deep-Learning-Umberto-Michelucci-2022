@@ -162,6 +162,7 @@ plt.xlim(0, 1000)
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-02-1-1.svg', bbox_inches='tight')
+plt.close()
 
 # Return a numpy list of weights
 weights = model.get_weights()
@@ -189,3 +190,4 @@ plt.xlim(-5, 20)
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-02-1-2.svg', bbox_inches='tight')
+plt.close()
