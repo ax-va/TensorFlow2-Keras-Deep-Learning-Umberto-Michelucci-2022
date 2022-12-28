@@ -121,17 +121,17 @@ def fit_model(
         callbacks=[tfdocs.modeling.EpochDots()]
     )
     learning_time = (time.time() - start_time) / 60
-    history = pd.DataFrame(result.history)
-    history['epoch'] = result.epoch
+    learning_history = pd.DataFrame(result.history)
+    learning_history['epoch'] = result.epoch
     print("\n")
     print('Cost function at epoch of 0:')
-    print(f"Training MSE = {history['loss'].values[0]}")
+    print(f"Training MSE = {learning_history['loss'].values[0]}")
     if (features_dev, target_dev) != (None, None):
-        print(f"Dev MSE = {history['val_loss'].values[0]}")
+        print(f"Dev MSE = {learning_history['val_loss'].values[0]}")
     print(f'Cost function at epoch of {num_epochs}:')
-    print(f"Training MSE = {history['loss'].values[-1]}")
+    print(f"Training MSE = {learning_history['loss'].values[-1]}")
     if (features_dev, target_dev) != (None, None):
-        print(f"Dev MSE = {history['val_loss'].values[-1]}")
+        print(f"Dev MSE = {learning_history['val_loss'].values[-1]}")
     print(f'Learning time = {learning_time:.2f} minutes')
     # model.summary()
-    return model, history, learning_time
+    return model, learning_history, learning_time

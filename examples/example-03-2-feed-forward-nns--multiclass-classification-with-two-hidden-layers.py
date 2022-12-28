@@ -116,7 +116,7 @@ gd_dict = {  # (batch_size, momentum, learning_rate)
 for gd_name, hyper_params in gd_dict.items():
     batch_size, momentum, learning_rate = hyper_params
     print("Type of gradient descent:", gd_name)
-    model = feed_forward.build_keras_sequential(
+    model = feed_forward.build_keras_model(
         num_inputs=784,
         structure="15-10",
         hidden_activation="relu",
@@ -133,6 +133,8 @@ for gd_name, hyper_params in gd_dict.items():
     test_loss, test_accuracy = model.evaluate(data_test_norm, labels_test, verbose=0)
     print(f"The accuracy on the dev set is equal to: {int(test_accuracy * 100)}%")
     print("*" * 65)
+
+# FIRST RUN
 
 # Type of gradient descent: standard
 # ...
@@ -160,4 +162,34 @@ for gd_name, hyper_params in gd_dict.items():
 # Training MSE = 0.264372318983078
 # Learning time = 5.01 minutes
 # The accuracy on the dev set is equal to: 86%
+# *****************************************************************
+
+# SECOND RUN
+
+# Type of gradient descent: standard
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 2.382349967956543
+# Cost function at epoch of 100:
+# Training MSE = 1.8391923904418945
+# Learning time = 0.15 minutes
+# The accuracy on the dev set is equal to: 36%
+# *****************************************************************
+# Type of gradient descent: stochastic
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 0.6920946836471558
+# Cost function at epoch of 100:
+# Training MSE = 0.2798094153404236
+# Learning time = 81.14 minutes
+# The accuracy on the dev set is equal to: 85%
+# *****************************************************************
+# Type of gradient descent: mini-batch
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 0.58244389295578
+# Cost function at epoch of 100:
+# Training MSE = 0.2661474347114563
+# Learning time = 4.57 minutes
+# The accuracy on the dev set is equal to: 85%
 # *****************************************************************
