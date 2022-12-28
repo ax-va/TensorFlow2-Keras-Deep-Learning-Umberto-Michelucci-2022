@@ -20,20 +20,14 @@ if package_dir not in sys.path:
     sys.path.insert(0, package_dir)
 
 # general libraries
-import pandas as pd
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from random import *
-import time
 
 # tensorflow libraries
-from tensorflow import keras
 from keras.datasets import fashion_mnist
-from keras import layers
 import tensorflow as tf
-import tensorflow_docs as tfdocs
-import tensorflow_docs.modeling
 
 import utils.feed_forward as feed_forward
 
