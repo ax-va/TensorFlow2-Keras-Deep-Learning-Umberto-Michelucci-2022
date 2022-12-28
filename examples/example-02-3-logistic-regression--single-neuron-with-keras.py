@@ -4,8 +4,15 @@
 ---- Logistic Regression with a Single Neuron
 Issue: Blood Cells Detection
 """
+import pathlib
+import sys
+# Get the package directory
+package_dir = str(pathlib.Path(__file__).resolve().parents[1])
+# Add the package directory into sys.path if necessary
+if package_dir not in sys.path:
+    sys.path.insert(0, package_dir)
+
 # general libraries
-import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -128,6 +135,7 @@ plt.figure()
 plt.plot(hist['epoch'], hist['binary_crossentropy'], color='blue')
 plt.ylabel('Cost Function (cross-entropy)', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('Number of Iterations', fontproperties=fm.FontProperties(fname=fp))
+plt.title('Logistic Regression with Single Neuron', fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(-5, 20)
 plt.xlim(0, 500)
 plt.axis(True)

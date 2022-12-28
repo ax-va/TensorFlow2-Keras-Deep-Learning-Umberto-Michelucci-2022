@@ -3,6 +3,14 @@
 -- Linear Regression Model with NumPy: Classical Solution
 Issue: Radon Contamination
 """
+import pathlib
+import sys
+# Get the package directory
+package_dir = str(pathlib.Path(__file__).resolve().parents[1])
+# Add the package directory into sys.path if necessary
+if package_dir not in sys.path:
+    sys.path.insert(0, package_dir)
+
 # general libraries
 import os
 import numpy as np
@@ -82,8 +90,8 @@ fp = set_style().set_general_style_parameters()
 plt.figure()
 plt.scatter(test_y, test_predictions, marker='o', c='blue')
 plt.plot([-5, 20], [-5, 20], color='black', ls='--')
-plt.ylabel('Predictions [activity]', fontproperties=fm.FontProperties(fname=fp))
-plt.xlabel('True Values [activity]', fontproperties=fm.FontProperties(fname=fp))
+plt.ylabel('Predictions', fontproperties=fm.FontProperties(fname=fp))
+plt.xlabel('True Values', fontproperties=fm.FontProperties(fname=fp))
 plt.title('Linear Regression with NumPy', fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(-5, 20)
 plt.xlim(-5, 20)

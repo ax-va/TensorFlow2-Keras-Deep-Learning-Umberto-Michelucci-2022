@@ -4,6 +4,14 @@
 ---- A Brief Digression: Overfitting
 ------ A Practical Example of Overfitting
 """
+import pathlib
+import sys
+# Get the package directory
+package_dir = str(pathlib.Path(__file__).resolve().parents[1])
+# Add the package directory into sys.path if necessary
+if package_dir not in sys.path:
+    sys.path.insert(0, package_dir)
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
@@ -26,6 +34,7 @@ plt.figure()
 plt.scatter(x, y, color='blue', linewidths=3)
 plt.ylabel('y', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('x', fontproperties=fm.FontProperties(fname=fp))
+plt.title('Two-Degree Polynomial Function with Normal Noise', fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(-50, 110)
 plt.xlim(-6, 6)
 plt.axis(True)
@@ -43,6 +52,7 @@ plt.scatter(x, y, color='blue', linewidths=3)
 plt.plot(x, poly_func_1(x, *popt), lw=3, color='red')
 plt.ylabel('y', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('x', fontproperties=fm.FontProperties(fname=fp))
+plt.title('Linear Approximation', fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(-50, 110)
 plt.xlim(-6, 6)
 plt.axis(True)
@@ -56,6 +66,7 @@ plt.scatter(x, y, color='blue', linewidths=3)
 plt.plot(x, poly_func_2(x, *popt), lw=3, color='red')
 plt.ylabel('y', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('x', fontproperties=fm.FontProperties(fname=fp))
+plt.title('Two-Degree Approximation', fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(-50, 110)
 plt.xlim(-6, 6)
 plt.axis(True)
@@ -73,6 +84,7 @@ plt.scatter(x, y, color='blue', linewidths=3)
 plt.plot(x, poly_func_11(x, *popt), lw=3, color='red')
 plt.ylabel('y', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('x', fontproperties=fm.FontProperties(fname=fp))
+plt.title('Eleven-Degree Approximation', fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(-50, 110)
 plt.xlim(-6, 6)
 plt.axis(True)

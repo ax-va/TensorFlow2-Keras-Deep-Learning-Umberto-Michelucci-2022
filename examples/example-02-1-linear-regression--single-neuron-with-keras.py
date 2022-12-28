@@ -4,6 +4,14 @@
 ---- Linear Regression Model with Keras
 Issue: Radon Contamination
 """
+import pathlib
+import sys
+# Get the package directory
+package_dir = str(pathlib.Path(__file__).resolve().parents[1])
+# Add the package directory into sys.path if necessary
+if package_dir not in sys.path:
+    sys.path.insert(0, package_dir)
+
 # general libraries
 import os
 import numpy as np
@@ -148,6 +156,7 @@ plt.figure()
 plt.plot(hist['epoch'], hist['mse'], color='blue')
 plt.ylabel('Cost Function (MSE)', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('Number of Iterations', fontproperties=fm.FontProperties(fname=fp))
+plt.title('Linear Regression with Single Neuron', fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(0, 50)
 plt.xlim(0, 1000)
 plt.axis(True)
@@ -172,9 +181,9 @@ test_predictions = model.predict(test_x).flatten()
 plt.figure()
 plt.scatter(test_y, test_predictions, marker='o', c='blue')
 plt.plot([-5, 20], [-5, 20], color='black', ls='--')
-plt.ylabel('Predictions [activity]', fontproperties=fm.FontProperties(fname=fp))
-plt.xlabel('True Values [activity]', fontproperties=fm.FontProperties(fname=fp))
-plt.title('Linear Regression with One Neuron', fontproperties=fm.FontProperties(fname=fp))
+plt.ylabel('Predictions', fontproperties=fm.FontProperties(fname=fp))
+plt.xlabel('True Values', fontproperties=fm.FontProperties(fname=fp))
+plt.title('Linear Regression with Single Neuron', fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(-5, 20)
 plt.xlim(-5, 20)
 plt.axis(True)
