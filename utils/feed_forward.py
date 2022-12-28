@@ -12,7 +12,7 @@ import tensorflow_docs as tfdocs
 import tensorflow_docs.modeling
 
 
-def build_model_from_layers(
+def build_keras_model(
         num_inputs,
         structure="4-3-2-1",
         hidden_activation="relu",
@@ -50,7 +50,7 @@ def build_model_from_layers(
     return model
 
 
-def build_model_from_sequential(
+def build_keras_sequential(
         num_inputs,
         structure="4-3-2-1",
         hidden_activation="relu",

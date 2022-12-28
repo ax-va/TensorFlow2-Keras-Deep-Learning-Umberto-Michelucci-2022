@@ -116,7 +116,7 @@ gd_dict = {  # (batch_size, momentum, learning_rate)
 for gd_name, hyper_params in gd_dict.items():
     batch_size, momentum, learning_rate = hyper_params
     print("Type of gradient descent:", gd_name)
-    model = feed_forward.build_model_from_sequential(
+    model = feed_forward.build_keras_sequential(
         num_inputs=784,
         structure="15-10",
         hidden_activation="relu",
