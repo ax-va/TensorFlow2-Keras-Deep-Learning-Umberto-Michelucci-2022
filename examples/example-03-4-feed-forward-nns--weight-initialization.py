@@ -68,86 +68,86 @@ labels_test[np.arange(10000), test_y] = 1
 mb_sizes = [200, 100, 50, 20, 10, 5]
 EPOCHS = 1000
 
-# learning_time_dict = {}
-# for mb_size in mb_sizes:
-#     print("*" * 65)
-#     print("Mini-batch size:", mb_size)
-#
-#     model = feed_forward.build_keras_model(
-#         num_inputs=784,
-#         structure="15-10",
-#         hidden_activation="relu",
-#         output_activation="softmax",
-#         initializer= tf.keras.initializers.HeNormal(),  # He initialization for ReLU
-#         optimizer=tf.keras.optimizers.SGD(momentum=0.9, learning_rate=0.0001),
-#         loss="categorical_crossentropy",
-#         metrics=["categorical_accuracy"]
-#     )
-#
-#     learning_history, learning_time = feed_forward.fit_model(
-#         model, data_train_norm, labels_train,
-#         batch_size=mb_size, num_epochs=EPOCHS
-#     )
-#
-#     learning_time_dict[mb_size] = learning_time
-#     # Save history.
-#     # Install the module 'fastparquet' for working with the parquet binary format.
-#     learning_history.to_parquet(f"../histories/history-03-4-mb_size-{mb_size}.parquet")
-# # Save learning time.
-# # Install the module 'fastparquet' for working with the parquet binary format.
-# pd.DataFrame(
-#     data=learning_time_dict.items(),
-#     columns=['mini_batch_size', 'learning_time_in_minutes'],
-# ).set_index('mini_batch_size').to_parquet("../histories/history-03-4-mb_size-learning_time.parquet")
+learning_time_dict = {}
+for mb_size in mb_sizes:
+    print("*" * 65)
+    print("Mini-batch size:", mb_size)
 
-# # *****************************************************************
-# # Mini-batch size: 200
-# # ...
-# # Cost function at epoch of 0:
-# # Training MSE = 2.229443311691284
-# # Cost function at epoch of 1000:
-# # Training MSE = 0.36729559302330017
-# # Learning time = 6.94 minutes
-# # *****************************************************************
-# # Mini-batch size: 100
-# # ...
-# # Cost function at epoch of 0:
-# # Training MSE = 2.044503927230835
-# # Cost function at epoch of 1000:
-# # Training MSE = 0.3306983709335327
-# # Learning time = 12.92 minutes
-# # *****************************************************************
-# # Mini-batch size: 50
-# # ...
-# # Cost function at epoch of 0:
-# # Training MSE = 1.9720191955566406
-# # Cost function at epoch of 1000:
-# # Training MSE = 0.30878108739852905
-# # Learning time = 22.37 minutes
-# # *****************************************************************
-# # Mini-batch size: 20
-# # ...
-# # Cost function at epoch of 0:
-# # Training MSE = 1.4063093662261963
-# # Cost function at epoch of 1000:
-# # Training MSE = 0.2639326751232147
-# # Learning time = 45.69 minutes
-# # *****************************************************************
-# # Mini-batch size: 10
-# # ...
-# # Cost function at epoch of 0:
-# # Training MSE = 1.2854679822921753
-# # Cost function at epoch of 1000:
-# # Training MSE = 0.23946025967597961
-# # Learning time = 85.34 minutes
-# # *****************************************************************
-# # Mini-batch size: 5
-# # ...
-# # Cost function at epoch of 0:
-# # Training MSE = 0.9960035681724548
-# # Cost function at epoch of 1000:
-# # Training MSE = 0.23836740851402283
-# # Learning time = 167.16 minutes
+    model = feed_forward.build_keras_model(
+        num_inputs=784,
+        structure="15-10",
+        hidden_activation="relu",
+        output_activation="softmax",
+        initializer= tf.keras.initializers.HeNormal(),  # He initialization for ReLU
+        optimizer=tf.keras.optimizers.SGD(momentum=0.9, learning_rate=0.0001),
+        loss="categorical_crossentropy",
+        metrics=["categorical_accuracy"]
+    )
+
+    learning_history, learning_time = feed_forward.fit_model(
+        model, data_train_norm, labels_train,
+        batch_size=mb_size, num_epochs=EPOCHS
+    )
+
+    learning_time_dict[mb_size] = learning_time
+    # Save history.
+    # Install the module 'fastparquet' for working with the parquet binary format.
+    learning_history.to_parquet(f"../histories/history-03-4-mb_size-{mb_size}.parquet")
+# Save learning time.
+# Install the module 'fastparquet' for working with the parquet binary format.
+pd.DataFrame(
+    data=learning_time_dict.items(),
+    columns=['mini_batch_size', 'learning_time_in_minutes'],
+).set_index('mini_batch_size').to_parquet("../histories/history-03-4-mb_size-learning_time.parquet")
+
+# *****************************************************************
+# Mini-batch size: 200
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 2.229443311691284
+# Cost function at epoch of 1000:
+# Training MSE = 0.36729559302330017
+# Learning time = 6.94 minutes
+# *****************************************************************
+# Mini-batch size: 100
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 2.044503927230835
+# Cost function at epoch of 1000:
+# Training MSE = 0.3306983709335327
+# Learning time = 12.92 minutes
+# *****************************************************************
+# Mini-batch size: 50
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 1.9720191955566406
+# Cost function at epoch of 1000:
+# Training MSE = 0.30878108739852905
+# Learning time = 22.37 minutes
+# *****************************************************************
+# Mini-batch size: 20
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 1.4063093662261963
+# Cost function at epoch of 1000:
+# Training MSE = 0.2639326751232147
+# Learning time = 45.69 minutes
+# *****************************************************************
+# Mini-batch size: 10
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 1.2854679822921753
+# Cost function at epoch of 1000:
+# Training MSE = 0.23946025967597961
+# Learning time = 85.34 minutes
+# *****************************************************************
+# Mini-batch size: 5
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 0.9960035681724548
+# Cost function at epoch of 1000:
+# Training MSE = 0.23836740851402283
+# Learning time = 167.16 minutes
 
 # Load histories
 learning_history_dict = {}
