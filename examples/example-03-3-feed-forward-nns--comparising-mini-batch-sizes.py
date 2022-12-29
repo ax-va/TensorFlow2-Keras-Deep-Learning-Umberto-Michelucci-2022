@@ -17,15 +17,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-import time
 
 # tensorflow libraries
-from tensorflow import keras
 from keras.datasets import fashion_mnist
-from keras import layers
-import tensorflow as tf
-import tensorflow_docs as tfdocs
-import tensorflow_docs.modeling
 
 import importlib
 set_style = importlib.import_module("ADL-Book-2nd-Ed.modules.style_setting").set_style
