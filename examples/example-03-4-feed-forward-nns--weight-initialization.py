@@ -65,51 +65,6 @@ labels_test[np.arange(10000), test_y] = 1
 # # - Xavier initialization for sigmoid;
 # # - He initialization for ReLU.
 
-
-# ReLU activation function and He initialization:
-# # Keras implementation:
-# def build_model(optimizer):
-#     # Create model
-#     feed_forward_model = keras.Sequential()
-#     # Use the He initialization for ReLU
-#     initializer = tf.keras.initializers.HeNormal()
-#     # Add first hidden layer and set input dimensions
-#     feed_forward_model.add(layers.Dense(
-#         15,  # number of neurons
-#         input_dim=784,
-#         activation='relu',
-#         kernel_initializer=initializer))
-#     # Add output layer
-#     feed_forward_model.add(layers.Dense(
-#         10,  # number of neurons
-#         activation='softmax'))
-#     # Compile model
-#     feed_forward_model.compile(
-#         loss='categorical_crossentropy',  # loss function
-#         optimizer=optimizer,
-#         metrics=['categorical_accuracy']  # accuracy metrics
-#     )
-#     return feed_forward_model
-
-#
-# def execute_mini_batch_gradient_descent(mini_batch_size):
-#     # Build model
-#     model_mbgd = build_model(tf.keras.optimizers.SGD(momentum=0.9, learning_rate=0.0001))
-#     # Set number of epochs
-#     EPOCHS = 100
-#     # Train model
-#     result = model_mbgd.fit(
-#         data_train_norm, labels_train,
-#         epochs=EPOCHS, verbose=0,
-#         batch_size=mini_batch_size,
-#         callbacks=[tfdocs.modeling.EpochDots()]
-#     )
-#     # Save performances
-#     hist_mbgd = pd.DataFrame(result.history)
-#     hist_mbgd['epoch'] = result.epoch
-#     return hist_mbgd
-
-
 mb_sizes = [200, 100, 50, 20, 10, 5]
 EPOCHS = 1000
 
@@ -193,7 +148,6 @@ EPOCHS = 1000
 # # Cost function at epoch of 1000:
 # # Training MSE = 0.23836740851402283
 # # Learning time = 167.16 minutes
-
 
 # Load histories
 learning_history_dict = {}
