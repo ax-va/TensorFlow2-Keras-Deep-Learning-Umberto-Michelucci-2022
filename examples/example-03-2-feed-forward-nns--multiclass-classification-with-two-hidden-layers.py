@@ -134,6 +134,7 @@ gd_dict = {  # (batch_size, momentum, learning_rate)
 for gd_name, hyper_params in gd_dict.items():
     batch_size, momentum, learning_rate = hyper_params
     print("Type of gradient descent:", gd_name)
+
     model = feed_forward.build_keras_model(
         num_inputs=784,
         structure="15-10",
@@ -143,9 +144,11 @@ for gd_name, hyper_params in gd_dict.items():
         loss="categorical_crossentropy",
         metrics=["categorical_accuracy"]
     )
-    model, history, learning_time = feed_forward.fit_model(
+
+    learning_history, learning_time = feed_forward.fit_model(
         model, data_train_norm, labels_train,
-        batch_size=batch_size, num_epochs=EPOCHS)
+        batch_size=batch_size, num_epochs=EPOCHS
+    )
 
     # Calculate accuracy on the dev dataset
     test_loss, test_accuracy = model.evaluate(data_test_norm, labels_test, verbose=0)
@@ -210,4 +213,34 @@ for gd_name, hyper_params in gd_dict.items():
 # Training MSE = 0.2661474347114563
 # Learning time = 4.57 minutes
 # The accuracy on the dev set is equal to: 85%
+# *****************************************************************
+
+# THIRD RUN
+
+# Type of gradient descent: standard
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 2.5165092945098877
+# Cost function at epoch of 100:
+# Training MSE = 1.6146700382232666
+# Learning time = 0.17 minutes
+# The accuracy on the dev set is equal to: 58%
+# *****************************************************************
+# Type of gradient descent: stochastic
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 0.6294620037078857
+# Cost function at epoch of 100:
+# Training MSE = 0.27525442838668823
+# Learning time = 79.17 minutes
+# The accuracy on the dev set is equal to: 84%
+# *****************************************************************
+# Type of gradient descent: mini-batch
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 0.5544220209121704
+# Cost function at epoch of 100:
+# Training MSE = 0.27743008732795715
+# Learning time = 4.81 minutes
+# The accuracy on the dev set is equal to: 83%
 # *****************************************************************

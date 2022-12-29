@@ -134,4 +134,4 @@ def fit_model(
         print(f"Dev MSE = {learning_history['val_loss'].values[-1]}")
     print(f'Learning time = {learning_time:.2f} minutes')
     # model.summary()
-    return model, learning_history, learning_time
+    return learning_history, learning_time
