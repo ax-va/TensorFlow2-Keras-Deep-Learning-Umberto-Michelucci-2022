@@ -4,14 +4,6 @@
 ---- Logistic Regression with a Single Neuron
 Issue: Blood Cells Detection
 """
-import pathlib
-import sys
-# Get the package directory
-package_dir = str(pathlib.Path(__file__).resolve().parents[1])
-# Add the package directory into sys.path if necessary
-if package_dir not in sys.path:
-    sys.path.insert(0, package_dir)
-
 # general libraries
 import numpy as np
 import pandas as pd
