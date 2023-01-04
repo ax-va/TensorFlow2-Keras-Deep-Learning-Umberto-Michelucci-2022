@@ -4,6 +4,14 @@
 ---- A Brief Digression: Overfitting
 ------ A Practical Example of Overfitting
 """
+import pathlib
+import sys
+# Get the package directory
+package_dir = str(pathlib.Path(__file__).resolve().parents[1])
+# Add the package directory into sys.path if necessary
+if package_dir not in sys.path:
+    sys.path.insert(0, package_dir)
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm

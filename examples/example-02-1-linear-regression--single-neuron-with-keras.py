@@ -4,6 +4,14 @@
 ---- Linear Regression Model with Keras
 Issue: Radon Contamination
 """
+import pathlib
+import sys
+# Get the package directory
+package_dir = str(pathlib.Path(__file__).resolve().parents[1])
+# Add the package directory into sys.path if necessary
+if package_dir not in sys.path:
+    sys.path.insert(0, package_dir)
+
 # general libraries
 import os
 import numpy as np
