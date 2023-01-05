@@ -162,5 +162,6 @@ plt.xlim(0, 1000)
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-03-5.svg', bbox_inches='tight')
+plt.close()
 
 # The model with 4 hidden layers and 100 neurons per layer is over fitted
