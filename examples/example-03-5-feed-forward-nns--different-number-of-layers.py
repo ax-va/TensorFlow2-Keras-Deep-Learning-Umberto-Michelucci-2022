@@ -146,13 +146,13 @@ for structure in structures:
     neurons_per_layer = [int(num_str) for num_str in structure.split("-")]
     num_layers = len(neurons_per_layer)
     num_hidden_layers = num_layers - 1
+    num_neurons = neurons_per_layer[0]
     if num_hidden_layers == 1:
         text_num_layers = f'{num_hidden_layers} hidden layer'
-        text_num_neurons = f'{neurons_per_layer[0]} neurons'
+        text_num_neurons = f'{num_neurons} neuron' if neurons_per_layer[0] == 1 else f'{num_neurons} neurons'
     else:
         text_num_layers = f'{num_hidden_layers} hidden layers'
-        text_num_neurons = f'{neurons_per_layer[0]} neurons per layer'
-    plt.plot(learning_history['epoch'], learning_history['loss'], label=f'{text_num_layers}, {text_num_neurons}')
+        text_num_neurons = f'{num_neurons} neuron' if neurons_per_layer[0] == 1 else f'{num_neurons} neurons'
 plt.ylabel('Cost function $J$', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('Epochs', fontproperties=fm.FontProperties(fname=fp))
 plt.title('Different number of layers', fontproperties=fm.FontProperties(fname=fp))
