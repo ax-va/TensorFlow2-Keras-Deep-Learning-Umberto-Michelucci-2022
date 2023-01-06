@@ -96,37 +96,6 @@ print(dev_x.shape)
 print(dev_y.shape)
 # (107,)
 
-
-# def create_and_train_model(data_train_norm, labels_train, data_dev_norm, labels_dev, num_neurons, num_layers):
-#     """
-#     This function builds and trains a feed-forward neural network model and evaluates it on the training and dev sets.
-#     """
-#     # Build model
-#     inputs = keras.Input(shape=data_train_norm.shape[1])  # input layer
-#     # He initialization
-#     initializer = tf.keras.initializers.HeNormal()
-#     layer = inputs
-#     # customized number of layers and neurons per layer
-#     for i in range(num_layers):
-#         layer = layers.Dense(num_neurons, activation='relu', kernel_initializer=initializer)(layer)  # hidden layers
-#     # output layer: one neuron with the identity activation function
-#     outputs = layers.Dense(1)(layer)
-#     keras_model = keras.Model(inputs=inputs, outputs=outputs, name='model')
-#     # Set optimizer and loss
-#     opt = keras.optimizers.Adam(learning_rate=0.001)
-#     keras_model.compile(loss='mse', optimizer=opt, metrics=['mse'])
-#     # Train model
-#     result = keras_model.fit(
-#         data_train_norm, labels_train,
-#         epochs=10000, verbose=0,
-#         batch_size=data_train_norm.shape[0],
-#         validation_data=(data_dev_norm, labels_dev),
-#         callbacks=[tfdocs.modeling.EpochDots()]
-#     )
-#     history = pd.DataFrame(result.history)
-#     history['epoch'] = result.epoch
-#     return history, keras_model
-
 STRUCTURE = "20-20-20-20-1"
 INPUTS = train_x.shape[1],  # 13
 EPOCHS = 10_000
@@ -170,8 +139,8 @@ plt.figure()
 plt.plot(learning_history['loss'], ls='-', color='black', lw=3, label='Training MSE')
 plt.plot(learning_history['val_loss'], ls='--', color='blue', lw=2, label='Dev MSE')
 plt.ylabel('Cost Function (MSE)', fontproperties=fm.FontProperties(fname=fp))
-plt.xlabel('Number of Iterations', fontproperties=fm.FontProperties(fname=fp))
-plt.ylim(0, 100)
+plt.xlabel('Epochs', fontproperties=fm.FontProperties(fname=fp))
+plt.ylim(0, 50)
 plt.legend(loc='best')
 plt.axis(True)
 plt.title("Extreme Overfitting without Regularization", fontproperties=fm.FontProperties(fname=fp))
@@ -190,6 +159,7 @@ ax.plot([np.min(np.array(dev_y)), np.max(np.array(dev_y))], [np.min(np.array(dev
 ax.set_xlabel('Measured Target Value', fontproperties=fm.FontProperties(fname=fp))
 ax.set_ylabel('Predicted Target Value', fontproperties=fm.FontProperties(fname=fp))
 ax.set_ylim(0, 55)
+ax.set_xlim(0, 55)
 ax.legend(loc='best')
 
 ax = fig.add_subplot(122)
@@ -197,6 +167,7 @@ ax.scatter(dev_y, pred_y_dev, s=50, color='blue', label=f"MSE Dev = {learning_hi
 ax.plot([np.min(np.array(dev_y)), np.max(np.array(dev_y))], [np.min(np.array(dev_y)), np.max(np.array(dev_y))], 'k--', lw=3)
 ax.set_xlabel('Measured Target Value', fontproperties=fm.FontProperties(fname=fp))
 ax.set_ylim(0, 55)
+ax.set_xlim(0, 55)
 ax.legend(loc='best')
 plt.suptitle("Extreme Overfitting without Regularization", fontproperties=fm.FontProperties(fname=fp))
 plt.axis(True)
