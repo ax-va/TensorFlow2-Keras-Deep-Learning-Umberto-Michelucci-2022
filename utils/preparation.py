@@ -9,17 +9,20 @@ def split_into_complete_and_incomplete_data(df):
     return df_complete, df_incomplete
 
 
-def normalize_data(df):
-    """Normalize features as pd.DataFrame and return normalized pd.DataFrame"""
-    np_data = df.to_numpy()
+def normalize_data(data):
+    """Normalize features in the form of numpy.ndarray or pandas.DataFrame"""
+    np_data = data if isinstance(data, np.ndarray) else data.to_numpy()
     mu = np.mean(np_data, axis=0)
     sigma = np.std(np_data, axis=0)
-    df_normalized = pd.DataFrame(
-        data=(np_data-mu)/sigma,
-        columns=df.columns,
-        index=df.index
-    )
-    return df_normalized, mu, sigma
+    data_normalized = (np_data - mu) / sigma  # numpy.ndarray
+    if not isinstance(data, np.ndarray):
+        # Return pandas.DataFrame
+        data_normalized = pd.DataFrame(
+            data=data_normalized,
+            columns=data.columns,
+            index=data.index
+        )
+    return data_normalized, mu, sigma
 
 
 def split_into_train_and_dev_data(features, target, train_proportion=0.8, seed=42):

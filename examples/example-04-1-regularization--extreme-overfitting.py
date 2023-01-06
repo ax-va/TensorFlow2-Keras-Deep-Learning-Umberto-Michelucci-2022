@@ -3,6 +3,14 @@
 -- Regularization
 Issue: Boston area housing and house pricing
 """
+import pathlib
+import sys
+# Get the package directory
+package_dir = str(pathlib.Path(__file__).resolve().parents[1])
+# Add the package directory into sys.path if necessary
+if package_dir not in sys.path:
+    sys.path.insert(0, package_dir)
+
 # general libraries
 import pandas as pd
 import numpy as np
@@ -18,6 +26,10 @@ import tensorflow_docs.modeling
 
 import importlib
 set_style = importlib.import_module("ADL-Book-2nd-Ed.modules.style_setting").set_style
+
+# my modules
+from utils.feed_forward import build_keras_model, fit_model
+from utils.preparation import normalize_data, split_into_train_and_dev_data
 
 # # Import the dataset from scikit-learn
 # from sklearn.datasets import load_boston
@@ -59,21 +71,22 @@ print('The dataset has', n_training_samples, 'training samples.')
 print('The dataset has', n_dim, 'features.')
 # The dataset has 13 features.
 
+#
+# def normalize_dataset(dataset):
+#     mu = np.mean(dataset, axis=0)
+#     sigma = np.std(dataset, axis=0)
+#     normalized_dataset = (dataset - mu) / sigma
+#     return normalized_dataset
 
-def normalize_dataset(dataset):
-    mu = np.mean(dataset, axis=0)
-    sigma = np.std(dataset, axis=0)
-    normalized_dataset = (dataset - mu) / sigma
-    return normalized_dataset
 
-
-features_norm = normalize_dataset(features)
-np.random.seed(42)  # reproducible random
-rnd = np.random.rand(len(features_norm)) < 0.8
-train_x = features_norm[rnd]
-train_y = target[rnd]
-dev_x = features_norm[~rnd]
-dev_y = target[~rnd]
+features_norm, mu, sigma = normalize_data(features)
+(train_x, train_y), (dev_x, dev_y) = split_into_train_and_dev_data(features_norm, target)
+# np.random.seed(42)  # reproducible random
+# rnd = np.random.rand(len(features_norm)) < 0.8
+# train_x = features_norm[rnd]
+# train_y = target[rnd]
+# dev_x = features_norm[~rnd]
+# dev_y = target[~rnd]
 print(train_x.shape)
 # (399, 13)
 print(train_y.shape)
@@ -84,59 +97,87 @@ print(dev_y.shape)
 # (107,)
 
 
-def create_and_train_model(data_train_norm, labels_train, data_dev_norm, labels_dev, num_neurons, num_layers):
-    """
-    This function builds and trains a feed-forward neural network model and evaluates it on the training and dev sets.
-    """
-    # Build model
-    inputs = keras.Input(shape=data_train_norm.shape[1])  # input layer
-    # He initialization
-    initializer = tf.keras.initializers.HeNormal()
-    layer = inputs
-    # customized number of layers and neurons per layer
-    for i in range(num_layers):
-        layer = layers.Dense(num_neurons, activation='relu', kernel_initializer=initializer)(layer)  # hidden layers
-    # output layer: one neuron with the identity activation function
-    outputs = layers.Dense(1)(layer)
-    keras_model = keras.Model(inputs=inputs, outputs=outputs, name='model')
-    # Set optimizer and loss
-    opt = keras.optimizers.Adam(learning_rate=0.001)
-    keras_model.compile(loss='mse', optimizer=opt, metrics=['mse'])
-    # Train model
-    result = keras_model.fit(
-        data_train_norm, labels_train,
-        epochs=10000, verbose=0,
-        batch_size=data_train_norm.shape[0],
-        validation_data=(data_dev_norm, labels_dev),
-        callbacks=[tfdocs.modeling.EpochDots()]
-    )
-    history = pd.DataFrame(result.history)
-    history['epoch'] = result.epoch
-    return history, keras_model
+# def create_and_train_model(data_train_norm, labels_train, data_dev_norm, labels_dev, num_neurons, num_layers):
+#     """
+#     This function builds and trains a feed-forward neural network model and evaluates it on the training and dev sets.
+#     """
+#     # Build model
+#     inputs = keras.Input(shape=data_train_norm.shape[1])  # input layer
+#     # He initialization
+#     initializer = tf.keras.initializers.HeNormal()
+#     layer = inputs
+#     # customized number of layers and neurons per layer
+#     for i in range(num_layers):
+#         layer = layers.Dense(num_neurons, activation='relu', kernel_initializer=initializer)(layer)  # hidden layers
+#     # output layer: one neuron with the identity activation function
+#     outputs = layers.Dense(1)(layer)
+#     keras_model = keras.Model(inputs=inputs, outputs=outputs, name='model')
+#     # Set optimizer and loss
+#     opt = keras.optimizers.Adam(learning_rate=0.001)
+#     keras_model.compile(loss='mse', optimizer=opt, metrics=['mse'])
+#     # Train model
+#     result = keras_model.fit(
+#         data_train_norm, labels_train,
+#         epochs=10000, verbose=0,
+#         batch_size=data_train_norm.shape[0],
+#         validation_data=(data_dev_norm, labels_dev),
+#         callbacks=[tfdocs.modeling.EpochDots()]
+#     )
+#     history = pd.DataFrame(result.history)
+#     history['epoch'] = result.epoch
+#     return history, keras_model
 
+STRUCTURE = "20-20-20-20-1"
+INPUTS = train_x.shape[1],  # 13
+EPOCHS = 10_000
+BATCH_SIZE = train_x.shape[0]  # 399
 
-num_l, num_n = 4, 20
-# hist, model = create_and_train_model(train_x, train_y, dev_x, dev_y, num_neurons=num_n, num_layers=num_l)
-# print(type(hist))  # <class 'pandas.core.frame.DataFrame'>
-# print(type(model))  # <class 'keras.engine.functional.Functional'>
-# hist.to_csv(f"../histories/history-04-1-num_n-{num_n}-num_l-{num_l}.csv")
-# model.save(f"../models/model-04-1-num_n-{num_n}-num_l-{num_l}")
+model = build_keras_model(
+        num_inputs=INPUTS,
+        structure="20-20-20-20-1",
+        hidden_activation="relu",
+        initializer=tf.keras.initializers.HeNormal(),
+        optimizer=keras.optimizers.Adam(learning_rate=0.001),
+        loss="mse",
+        metrics=("mse", ),
+        model_name="feed-forward-model"
+)
 
-hist = pd.read_csv(f"../histories/history-04-1-num_n-{num_n}-num_l-{num_l}.csv")
-model = tf.keras.models.load_model(f"../models/model-04-1-num_n-{num_n}-num_l-{num_l}")
+learning_history, learning_time = fit_model(
+    model, train_x, train_y,
+    features_dev=dev_x,
+    target_dev=dev_y,
+    batch_size=BATCH_SIZE,
+    num_epochs=EPOCHS
+)
+# Cost function at epoch of 0:
+# Training MSE = 584.1921997070312
+# Dev MSE = 554.349609375
+# Cost function at epoch of 10000:
+# Training MSE = 0.033795516937971115
+# Dev MSE = 25.265743255615234
+# Learning time = 3.33 minutes
+
+learning_history.to_parquet(f"../histories/history-04-1-batch_size-{BATCH_SIZE}-structure-{STRUCTURE}.parquet")
+# Save the trained model
+model.save(f"../models/model-04-1-structure-{STRUCTURE}")
+
+learning_history = pd.read_parquet(f"../histories/history-04-1-batch_size-{BATCH_SIZE}-structure-{STRUCTURE}.parquet")
+model = tf.keras.models.load_model(f"../models/model-04-1-structure-{STRUCTURE}")
 
 fp = set_style().set_general_style_parameters()
 plt.figure()
-plt.plot(hist['loss'], ls='-', color='black', lw=3, label='Training MSE')
-plt.plot(hist['val_loss'], ls='--', color='blue', lw=2, label='Dev MSE')
+plt.plot(learning_history['loss'], ls='-', color='black', lw=3, label='Training MSE')
+plt.plot(learning_history['val_loss'], ls='--', color='blue', lw=2, label='Dev MSE')
 plt.ylabel('Cost Function (MSE)', fontproperties=fm.FontProperties(fname=fp))
 plt.xlabel('Number of Iterations', fontproperties=fm.FontProperties(fname=fp))
-plt.ylim(0, 30)
+plt.ylim(0, 100)
 plt.legend(loc='best')
 plt.axis(True)
-plt.title("Without Regularization", fontproperties=fm.FontProperties(fname=fp))
+plt.title("Extreme Overfitting without Regularization", fontproperties=fm.FontProperties(fname=fp))
 # plt.show()
 plt.savefig('../figures/figure-04-1-1.svg', bbox_inches='tight')
+plt.close()
 
 # predictions
 pred_y_train = model.predict(train_x).flatten()
@@ -144,7 +185,7 @@ pred_y_dev = model.predict(dev_x).flatten()
 
 fig = plt.figure(figsize=(13, 5))
 ax = fig.add_subplot(121)
-ax.scatter(train_y, pred_y_train, s=50, color='blue', label=f"MSE Training = {hist['loss'].values[-1]:5.4f}")
+ax.scatter(train_y, pred_y_train, s=50, color='blue', label=f"MSE Training = {learning_history['loss'].values[-1]:5.4f}")
 ax.plot([np.min(np.array(dev_y)), np.max(np.array(dev_y))], [np.min(np.array(dev_y)), np.max(np.array(dev_y))], 'k--', lw=3)
 ax.set_xlabel('Measured Target Value', fontproperties=fm.FontProperties(fname=fp))
 ax.set_ylabel('Predicted Target Value', fontproperties=fm.FontProperties(fname=fp))
@@ -152,12 +193,13 @@ ax.set_ylim(0, 55)
 ax.legend(loc='best')
 
 ax = fig.add_subplot(122)
-ax.scatter(dev_y, pred_y_dev, s=50, color='blue', label=f"MSE Dev = {hist['val_loss'].values[-1]:5.2f}")
+ax.scatter(dev_y, pred_y_dev, s=50, color='blue', label=f"MSE Dev = {learning_history['val_loss'].values[-1]:5.2f}")
 ax.plot([np.min(np.array(dev_y)), np.max(np.array(dev_y))], [np.min(np.array(dev_y)), np.max(np.array(dev_y))], 'k--', lw=3)
 ax.set_xlabel('Measured Target Value', fontproperties=fm.FontProperties(fname=fp))
 ax.set_ylim(0, 55)
 ax.legend(loc='best')
-plt.suptitle("Without Regularization", fontproperties=fm.FontProperties(fname=fp))
+plt.suptitle("Extreme Overfitting without Regularization", fontproperties=fm.FontProperties(fname=fp))
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-04-1-2.svg', bbox_inches='tight')
+plt.close()

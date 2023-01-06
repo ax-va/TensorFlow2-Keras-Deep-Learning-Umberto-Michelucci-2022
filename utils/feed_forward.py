@@ -112,12 +112,13 @@ def fit_model(
         num_epochs=1000
 ):
     """Fit a feed-forward NN model using Keras and validate it on the training and dev datasets"""
+    validation_data = (features_dev, target_dev) if features_dev is not None and target_dev is not None else None
     start_time = time.time()
     result = model.fit(
         features_train, target_train,
         epochs=num_epochs, verbose=0,
         batch_size=batch_size,
-        validation_data=(features_dev, target_dev) if (features_dev, target_dev) != (None, None) else None,
+        validation_data=validation_data,
         callbacks=[tfdocs.modeling.EpochDots()]
     )
     learning_time = (time.time() - start_time) / 60
@@ -126,11 +127,11 @@ def fit_model(
     print("\n")
     print('Cost function at epoch of 0:')
     print(f"Training MSE = {learning_history['loss'].values[0]}")
-    if (features_dev, target_dev) != (None, None):
+    if features_dev is not None and target_dev is not None:
         print(f"Dev MSE = {learning_history['val_loss'].values[0]}")
     print(f'Cost function at epoch of {num_epochs}:')
     print(f"Training MSE = {learning_history['loss'].values[-1]}")
-    if (features_dev, target_dev) != (None, None):
+    if features_dev is not None and target_dev is not None:
         print(f"Dev MSE = {learning_history['val_loss'].values[-1]}")
     print(f'Learning time = {learning_time:.2f} minutes')
     # model.summary()
