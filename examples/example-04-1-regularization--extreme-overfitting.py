@@ -103,7 +103,7 @@ BATCH_SIZE = train_x.shape[0]  # 399
 
 model = build_keras_model(
         num_inputs=INPUTS,
-        structure="20-20-20-20-1",
+        structure=STRUCTURE,
         hidden_activation="relu",
         initializer=tf.keras.initializers.HeNormal(),
         optimizer=keras.optimizers.Adam(learning_rate=0.001),
