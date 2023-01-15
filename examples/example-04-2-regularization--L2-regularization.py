@@ -1,9 +1,16 @@
 #!/usr/bin/python3
 """
 -- Regularization
----- L2 Regularization
 Issue: Boston area housing and house pricing
 """
+import pathlib
+import sys
+# Get the package directory
+package_dir = str(pathlib.Path(__file__).resolve().parents[1])
+# Add the package directory into sys.path if necessary
+if package_dir not in sys.path:
+    sys.path.insert(0, package_dir)
+
 # general libraries
 import pandas as pd
 import numpy as np
@@ -12,13 +19,14 @@ import matplotlib.font_manager as fm
 
 # tensorflow libraries
 from tensorflow import keras
-from keras import layers
 import tensorflow as tf
-import tensorflow_docs as tfdocs
-import tensorflow_docs.modeling
 
 import importlib
 set_style = importlib.import_module("ADL-Book-2nd-Ed.modules.style_setting").set_style
+
+# my modules
+from utils.feed_forward import build_keras_model, fit_model
+from utils.preparation import normalize_data, split_into_train_and_dev_data
 
 # # Import the dataset from scikit-learn
 # from sklearn.datasets import load_boston
@@ -52,7 +60,6 @@ target = raw_df.values[1::2, 2]  # house price
 # - LSTAT: % lower status of the population
 # - MEDV: Median value of owner-occupied homes in $1000s
 
-
 n_training_samples = features.shape[0]
 n_dim = features.shape[1]
 print('The dataset has', n_training_samples, 'training samples.')
@@ -60,21 +67,8 @@ print('The dataset has', n_training_samples, 'training samples.')
 print('The dataset has', n_dim, 'features.')
 # The dataset has 13 features.
 
-
-def normalize_dataset(dataset):
-    mu = np.mean(dataset, axis=0)
-    sigma = np.std(dataset, axis=0)
-    normalized_dataset = (dataset - mu) / sigma
-    return normalized_dataset
-
-
-features_norm = normalize_dataset(features)
-np.random.seed(42)  # reproducible random
-rnd = np.random.rand(len(features_norm)) < 0.8
-train_x = features_norm[rnd]
-train_y = target[rnd]
-dev_x = features_norm[~rnd]
-dev_y = target[~rnd]
+features_norm, mu, sigma = normalize_data(features)
+(train_x, train_y), (dev_x, dev_y) = split_into_train_and_dev_data(features_norm, target)
 print(train_x.shape)
 # (399, 13)
 print(train_y.shape)
@@ -84,146 +78,143 @@ print(dev_x.shape)
 print(dev_y.shape)
 # (107,)
 
+STRUCTURE = "20-20-20-20-1"
+INPUTS = train_x.shape[1],  # 13
+EPOCHS = 10_000
+BATCH_SIZE = train_x.shape[0]  # 399
+l2_lambdas = [0.0, 10.0]
 
-def create_and_train_l2_reg_model(data_train_norm, labels_train, data_dev_norm, labels_dev,
-                                  num_neurons, num_layers, num_epochs, l2_reg_lambda):
-    """
-    This function builds and trains a feed-forward neural network model and evaluates it on the training and dev sets.
-    """
-    # Build model
-    inputs = keras.Input(shape=data_train_norm.shape[1])  # input layer
-    # He initialization
-    initializer = tf.keras.initializers.HeNormal()
-    # L2 regularization
-    reg = tf.keras.regularizers.l2(l2=l2_reg_lambda)
-    layer = inputs
-    # customized number of layers and neurons per layer
-    for i in range(num_layers):
-        layer = layers.Dense(
-            num_neurons,
-            activation='relu',
-            kernel_initializer=initializer,
-            kernel_regularizer=reg
-        )(layer)  # hidden layers
-    # output layer: one neuron with the identity activation function
-    outputs = layers.Dense(1)(layer)
-    keras_model = keras.Model(inputs=inputs, outputs=outputs, name='model')
-    # Set optimizer and loss
-    opt = keras.optimizers.Adam(learning_rate=0.001)
-    keras_model.compile(loss='mse', optimizer=opt, metrics=['mse'])
-    # Train model
-    result = keras_model.fit(
-        data_train_norm, labels_train,
-        epochs=num_epochs, verbose=0,
-        batch_size=data_train_norm.shape[0],
-        validation_data=(data_dev_norm, labels_dev),
-        callbacks=[tfdocs.modeling.EpochDots()]
+for l2_lambda in l2_lambdas:
+    print("*" * 65)
+    print(f"L2 lambda: {l2_lambda}")
+
+    model = build_keras_model(
+            num_inputs=INPUTS,
+            structure=STRUCTURE,
+            hidden_activation="relu",
+            initializer=tf.keras.initializers.HeNormal(),
+            regularizer=tf.keras.regularizers.l2(l2=l2_lambda),
+            optimizer=keras.optimizers.Adam(learning_rate=0.001),
+            loss="mse",
+            metrics=("mse", ),
+            model_name="feed-forward-model"
     )
-    history = pd.DataFrame(result.history)
-    history['epoch'] = result.epoch
-    # print performances
-    print('Cost function at epoch of 0:')
-    print(f"Training MSE = {history['loss'].values[0]}")
-    print(f"Dev MSE = {history['val_loss'].values[0]}")
-    print(f'Cost function at epoch of {num_epochs}:')
-    print(f"Training MSE = {history['loss'].values[-1]}")
-    print(f"Dev MSE = {history['val_loss'].values[-1]}")
-    return history, keras_model
 
+    learning_history, learning_time = fit_model(
+        model, train_x, train_y,
+        features_dev=dev_x,
+        target_dev=dev_y,
+        batch_size=BATCH_SIZE,
+        num_epochs=EPOCHS
+    )
+    learning_history.to_parquet(f"../histories/history-04-2-structure-{STRUCTURE}-l2_lambda-{l2_lambda}.parquet")
+    # Save the trained model
+    model.save(f"../models/model-04-2-structure-{STRUCTURE}-l2_lambda-{l2_lambda}")
+# *****************************************************************
+# L2 lambda: 0.0
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 522.5780639648438
+# Dev MSE = 491.3822021484375
+# Cost function at epoch of 10000:
+# Training MSE = 0.020333461463451385
+# Dev MSE = 16.777416229248047
+# Learning time = 3.34 minutes
+# *****************************************************************
+# L2 lambda: 10.0
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 2112.442626953125
+# Dev MSE = 2078.31201171875
+# Cost function at epoch of 10000:
+# Training MSE = 43.4915885925293
+# Dev MSE = 44.756187438964844
+# Learning time = 3.29 minutes
 
-num_l, num_n = 4, 20
-reg_lambdas = [0.0, 10.0]
-
-# for reg_lambda in reg_lambdas:
-#     hist, model = create_and_train_l2_reg_model(
-#         train_x, train_y, dev_x, dev_y,
-#         num_neurons=num_n, num_layers=num_l, num_epochs=10000, l2_reg_lambda=reg_lambda
-#     )
-#     hist.to_csv(f"../histories/history-04-2-num_n-{num_n}-num_l-{num_l}-L2_reg-{reg_lambda}.csv")
-#     model.save(f"../models/model-04-2-num_n-{num_n}-num_l-{num_l}-L2_reg-{reg_lambda}")
-
-hist = pd.read_csv(f"../histories/history-04-2-num_n-{num_n}-num_l-{num_l}-L2_reg-10.0.csv")
-model_reg = tf.keras.models.load_model(f"../models/model-04-2-num_n-{num_n}-num_l-{num_l}-L2_reg-10.0")
-model_not_reg = tf.keras.models.load_model(f"../models/model-04-2-num_n-{num_n}-num_l-{num_l}-L2_reg-0.0")
+learning_history_dict = {}
+model_dict = {}
+for l2_lambda in l2_lambdas:
+    learning_history_dict[l2_lambda] = pd.read_parquet(f"../histories/history-04-2-structure-{STRUCTURE}-l2_lambda-{l2_lambda}.parquet")
+    model_dict[l2_lambda] = tf.keras.models.load_model(f"../models/model-04-2-structure-{STRUCTURE}-l2_lambda-{l2_lambda}")
 
 fp = set_style().set_general_style_parameters()
 plt.figure()
-plt.plot(hist['loss'], ls='-', color='black', lw=3, label='Training MSE')
-plt.plot(hist['val_loss'], ls='--', color='blue', lw=2, label='Dev MSE')
+for l2_lambda in l2_lambdas:
+    label_train = 'Training: $\lambda = ' + str(l2_lambda) + '$'
+    plt.plot(learning_history_dict[l2_lambda]['loss'], ls='-', lw=3, label=label_train)
+    label_dev = 'Dev: $\lambda = ' + str(l2_lambda) + '$'
+    plt.plot(learning_history_dict[l2_lambda]['val_loss'], ls='--', lw=2, label=label_dev)
 plt.ylabel('Cost Function (MSE)', fontproperties=fm.FontProperties(fname=fp))
-plt.xlabel('Number of Iterations', fontproperties=fm.FontProperties(fname=fp))
-title = f'$L_2$ Regularization with $λ$ = {reg_lambdas[1]}'
+plt.xlabel('Epochs', fontproperties=fm.FontProperties(fname=fp))
+title = f'$L_2$ Regularization'
 plt.title(title, fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(0, 200)
-plt.legend(loc='best')
+plt.legend(loc='upper right', fontsize='xx-small')
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-04-2-1.svg', bbox_inches='tight')
-
-# predictions
-pred_y_train = model_reg.predict(train_x).flatten()
-pred_y_dev = model_reg.predict(dev_x).flatten()
+plt.close()
 
 fig = plt.figure(figsize=(13, 5))
 ax = fig.add_subplot(121)
-ax.scatter(train_y, pred_y_train, s=50, color='blue', label=f"MSE Training = {hist['loss'].values[-1]:5.4f}")
+for l2_lambda in list(reversed(l2_lambdas)):
+    # predictions for training data
+    pred_y_train = model_dict[l2_lambda].predict(train_x).flatten()
+    label = f"MSE Training = {learning_history_dict[l2_lambda]['loss'].values[-1]:5.4f}; $\lambda = {l2_lambda}$"
+    ax.scatter(train_y, pred_y_train, s=50, label=label)
 ax.plot([np.min(np.array(dev_y)), np.max(np.array(dev_y))], [np.min(np.array(dev_y)), np.max(np.array(dev_y))], 'k--', lw=3)
 ax.set_xlabel('Measured Target Value', fontproperties=fm.FontProperties(fname=fp))
 ax.set_ylabel('Predicted Target Value', fontproperties=fm.FontProperties(fname=fp))
 ax.set_ylim(0, 55)
-ax.legend(loc='best')
+ax.set_xlim(0, 55)
+ax.legend(loc='upper left', fontsize='xx-small')
 
 ax = fig.add_subplot(122)
-ax.scatter(dev_y, pred_y_dev, s=50, color='blue', label=f"MSE Dev = {hist['val_loss'].values[-1]:5.2f}")
+for l2_lambda in list(reversed(l2_lambdas)):
+    # predictions for dev data
+    pred_y_dev = model_dict[l2_lambda].predict(dev_x).flatten()
+    label = f"MSE Dev = {learning_history_dict[l2_lambda]['val_loss'].values[-1]:5.2f}; $\lambda = {l2_lambda}$"
+    ax.scatter(dev_y, pred_y_dev, s=50, label=label)
 ax.plot([np.min(np.array(dev_y)), np.max(np.array(dev_y))], [np.min(np.array(dev_y)), np.max(np.array(dev_y))], 'k--', lw=3)
 ax.set_xlabel('Measured Target Value', fontproperties=fm.FontProperties(fname=fp))
 ax.set_ylim(0, 55)
-ax.legend(loc='best')
-title = f'$L_2$ Regularization with $λ$ = {reg_lambdas[1]}'
+ax.set_xlim(0, 55)
+ax.legend(loc='upper left', fontsize='xx-small')
+title = f'$L_2$ Regularization'
 plt.suptitle(title, fontproperties=fm.FontProperties(fname=fp))
 plt.axis(True)
 # plt.show()
 plt.savefig('../figures/figure-04-2-2.svg', bbox_inches='tight')
+plt.close()
 
-# weights of non-regularized network
-weights1_not_reg = model_not_reg.layers[1].get_weights()
-weights2_not_reg = model_not_reg.layers[2].get_weights()
-weights3_not_reg = model_not_reg.layers[3].get_weights()
-weights4_not_reg = model_not_reg.layers[4].get_weights()
-
-print(type(weights1_not_reg[0]))  # <class 'numpy.ndarray'>
-print(type(weights1_not_reg[1]))  # <class 'numpy.ndarray'>
-
-print(weights1_not_reg[0].shape)  # 13 features to each of 20 neurons
-# (13, 20)
-print(weights1_not_reg[1].shape)  # 1 bias to each of 20 neurons
-# (20,)
-
-print(weights2_not_reg[0].shape)  # 20 inputs to each of 20 neurons
-# (20, 20)
-print(weights2_not_reg[1].shape)  # 1 bias to each of 20 neurons
-# (20,)
-
-print(weights3_not_reg[0].shape)  # 20 inputs to each of 20 neurons
-# (20, 20)
-print(weights3_not_reg[1].shape)  # 1 bias to each of 20 neurons
-# (20,)
-
-print(weights4_not_reg[0].shape)  # 20 inputs to each of 20 neurons
-# (20, 20)
-print(weights4_not_reg[1].shape)  # 1 bias to each of 20 neurons
-# (20,)
-
-# weights of regularized network
-weights1_reg = model_reg.layers[1].get_weights()
-weights2_reg = model_reg.layers[2].get_weights()
-weights3_reg = model_reg.layers[3].get_weights()
-weights4_reg = model_reg.layers[4].get_weights()
+for l2_lambda in l2_lambdas:
+    print("*" * 65)
+    print(f"L2 lambda: {l2_lambda}")
+    # layer weights
+    weights_layer_1 = model_dict[l2_lambda].layers[1].get_weights()
+    weights_layer_2 = model_dict[l2_lambda].layers[2].get_weights()
+    weights_layer_3 = model_dict[l2_lambda].layers[3].get_weights()
+    weights_layer_4 = model_dict[l2_lambda].layers[4].get_weights()
+    print(type(weights_layer_1[0]))  # <class 'numpy.ndarray'>
+    print(type(weights_layer_1[1]))  # <class 'numpy.ndarray'>
+    print(weights_layer_1[0].shape)  # 13 features to each of 20 neurons  # (13, 20)
+    print(weights_layer_1[1].shape)  # 1 bias to each of 20 neurons  # (20,)
+    print(weights_layer_2[0].shape)  # 20 inputs to each of 20 neurons  # (20, 20)
+    print(weights_layer_2[1].shape)  # 1 bias to each of 20 neurons  # (20,)
+    print(weights_layer_3[0].shape)  # 20 inputs to each of 20 neurons  # (20, 20)
+    print(weights_layer_3[1].shape)  # 1 bias to each of 20 neurons  # (20,)
+    print(weights_layer_4[0].shape)  # 20 inputs to each of 20 neurons  # (20, 20)
+    print(weights_layer_4[1].shape)  # 1 bias to each of 20 neurons  # (20,)
 
 fig = plt.figure(figsize=(12, 6))
 ax = fig.add_subplot(221)
-plt.hist(weights1_not_reg[0].flatten(), alpha=0.25, bins=10, color='black')
-plt.hist(weights1_reg[0].flatten(), alpha=0.5, bins=5, color='black')
+alpha = 0.25
+bins = 10
+for l2_lambda in l2_lambdas:
+    weights = model_dict[l2_lambda].layers[1].get_weights()
+    plt.hist(weights[0].flatten(), alpha=alpha, bins=bins, color='black')
+    alpha += 0.25
+    bins += 10
 ax.set_ylabel('Count', fontproperties=fm.FontProperties(fname=fp))
 ax.text(-1, 150, 'Layer 1', fontproperties=fm.FontProperties(fname=fp))
 plt.xticks(fontproperties= fm.FontProperties(fname=fp))
@@ -231,16 +222,26 @@ plt.yticks(fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(0, 350)
 
 ax = fig.add_subplot(222)
-plt.hist(weights2_not_reg[0].flatten(), alpha=0.25, bins=10, color='black')
-plt.hist(weights2_reg[0].flatten(), alpha=0.5, bins=5, color='black')
+alpha = 0.25
+bins = 10
+for l2_lambda in l2_lambdas:
+    weights = model_dict[l2_lambda].layers[2].get_weights()
+    plt.hist(weights[0].flatten(), alpha=alpha, bins=bins, color='black')
+    alpha += 0.25
+    bins += 10
 ax.text(-1.25, 150, 'Layer 2', fontproperties=fm.FontProperties(fname=fp))
 plt.xticks(fontproperties=fm.FontProperties(fname=fp))
 plt.yticks(fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(0, 350)
 
 ax = fig.add_subplot(223)
-plt.hist(weights3_not_reg[0].flatten(), alpha=0.25, bins=10, color='black')
-plt.hist(weights3_reg[0].flatten(), alpha=0.5, bins=5, color='black')
+alpha = 0.25
+bins = 10
+for l2_lambda in l2_lambdas:
+    weights = model_dict[l2_lambda].layers[3].get_weights()
+    plt.hist(weights[0].flatten(), alpha=alpha, bins=bins, color='black')
+    alpha += 0.25
+    bins += 10
 ax.set_ylabel('Count', fontproperties=fm.FontProperties(fname=fp))
 ax.set_xlabel('Weights', fontproperties=fm.FontProperties(fname=fp))
 ax.text(-2.30, 150, 'Layer 3', fontproperties=fm.FontProperties(fname=fp))
@@ -249,51 +250,58 @@ plt.yticks(fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(0, 400)
 
 ax = fig.add_subplot(224)
-plt.hist(weights4_not_reg[0].flatten(), alpha=0.25, bins=10, color='black')
-plt.hist(weights4_reg[0].flatten(), alpha=0.5, bins=5, color='black')
+alpha = 0.25
+bins = 10
+for l2_lambda in l2_lambdas:
+    weights = model_dict[l2_lambda].layers[4].get_weights()
+    plt.hist(weights[0].flatten(), alpha=alpha, bins=bins, color='black')
+    alpha += 0.25
+    bins += 10
 ax.set_xlabel('Weights', fontproperties=fm.FontProperties(fname=fp))
 ax.text(-2.30, 150, 'Layer 4', fontproperties=fm.FontProperties(fname=fp))
 plt.xticks(fontproperties=fm.FontProperties(fname=fp))
 plt.yticks(fontproperties=fm.FontProperties(fname=fp))
 plt.ylim(0, 400)
-title = f'$L_2$ Regularization with $λ$ = {reg_lambdas[0]} and $λ$ = {reg_lambdas[1]}'
+title = f'$L_2$ Regularization'
 plt.suptitle(title, fontproperties=fm.FontProperties(fname=fp))
 plt.savefig('../figures/figure-04-2-3.svg', bbox_inches='tight')
+plt.close()
 
-print(f"Percent of weight less than 1e−3 for λ = {reg_lambdas[0]}")
-print('First hidden layer:')
-print(f"{(np.sum(np.abs(weights1_not_reg[0]) < 1e-3)) / weights1_not_reg[0].size * 100.0:.2f}%")
-print('Second hidden layer:')
-print(f"{(np.sum(np.abs(weights2_not_reg[0]) < 1e-3)) / weights2_not_reg[0].size * 100.0:.2f}%")
-print('Third hidden layer:')
-print(f"{(np.sum(np.abs(weights3_not_reg[0]) < 1e-3)) / weights3_not_reg[0].size * 100.0:.2f}%")
-print('Fourth hidden layer:')
-print(f"{(np.sum(np.abs(weights4_not_reg[0]) < 1e-3)) / weights4_not_reg[0].size * 100.0:.2f}%")
-# Percent of weight less than 1e−3 for λ = 0.0
+for l2_lambda in l2_lambdas:
+    weights_layer_1 = model_dict[l2_lambda].layers[1].get_weights()
+    weights_layer_2 = model_dict[l2_lambda].layers[2].get_weights()
+    weights_layer_3 = model_dict[l2_lambda].layers[3].get_weights()
+    weights_layer_4 = model_dict[l2_lambda].layers[4].get_weights()
+    print("*" * 65)
+    print(f"λ = {l2_lambda}")
+    print(f"Percent of weight less than 1e−3")
+    print('First hidden layer:')
+    print(f"{(np.sum(np.abs(weights_layer_1[0]) < 1e-3)) / weights_layer_1[0].size * 100.0:.2f}%")
+    print('Second hidden layer:')
+    print(f"{(np.sum(np.abs(weights_layer_2[0]) < 1e-3)) / weights_layer_2[0].size * 100.0:.2f}%")
+    print('Third hidden layer:')
+    print(f"{(np.sum(np.abs(weights_layer_3[0]) < 1e-3)) / weights_layer_3[0].size * 100.0:.2f}%")
+    print('Fourth hidden layer:')
+    print(f"{(np.sum(np.abs(weights_layer_4[0]) < 1e-3)) / weights_layer_4[0].size * 100.0:.2f}%")
+# *****************************************************************
+# λ = 0.0
+# Percent of weight less than 1e−3
 # First hidden layer:
 # 0.00%
 # Second hidden layer:
-# 0.50%
-# Third hidden layer:
-# 0.00%
-# Fourth hidden layer:
 # 0.25%
-
-print(f"Percent of weight less than 1e−3 for λ = {reg_lambdas[1]}")
-print('First hidden layer:')
-print(f"{(np.sum(np.abs(weights1_reg[0]) < 1e-3)) / weights1_reg[0].size * 100.0:.2f}%")
-print('Second hidden layer:')
-print(f"{(np.sum(np.abs(weights2_reg[0]) < 1e-3)) / weights2_reg[0].size * 100.0:.2f}%")
-print('Third hidden layer:')
-print(f"{(np.sum(np.abs(weights3_reg[0]) < 1e-3)) / weights3_reg[0].size * 100.0:.2f}%")
-print('Fourth hidden layer:')
-print(f"{(np.sum(np.abs(weights4_reg[0]) < 1e-3)) / weights4_reg[0].size * 100.0:.2f}%")
-# Percent of weight less than 1e−3 for λ = 10.0
-# First hidden layer:
-# 3.85%
-# Second hidden layer:
-# 61.50%
 # Third hidden layer:
-# 78.25%
+# 0.00%
 # Fourth hidden layer:
-# 75.25%
+# 0.50%
+# *****************************************************************
+# λ = 10.0
+# Percent of weight less than 1e−3
+# First hidden layer:
+# 20.00%
+# Second hidden layer:
+# 31.75%
+# Third hidden layer:
+# 46.50%
+# Fourth hidden layer:
+# 61.00%

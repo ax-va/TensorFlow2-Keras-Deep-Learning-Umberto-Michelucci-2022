@@ -41,9 +41,7 @@ def build_keras_model(
     # output layer
     outputs = layers.Dense(
         neurons_per_layer[-1],
-        activation=output_activation,
-        kernel_initializer=initializer,
-        kernel_regularizer=regularizer
+        activation=output_activation
     )(layer)
     model = keras.Model(inputs=inputs, outputs=outputs, name=model_name)
     model.compile(loss=loss, optimizer=optimizer, metrics=metrics)
@@ -88,9 +86,7 @@ def build_keras_sequential(
     model.add(
         layers.Dense(
             neurons_per_layer[-1],  # number of neurons
-            activation=output_activation,
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizer
+            activation=output_activation
         )
     )
     # Compile model

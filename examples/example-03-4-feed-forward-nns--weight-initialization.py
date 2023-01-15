@@ -85,7 +85,7 @@ for mb_size in mb_sizes:
         structure="15-10",
         hidden_activation="relu",
         output_activation="softmax",
-        initializer= tf.keras.initializers.HeNormal(),  # He initialization for ReLU
+        initializer=tf.keras.initializers.HeNormal(),  # He initialization for ReLU
         optimizer=tf.keras.optimizers.SGD(momentum=0.9, learning_rate=0.0001),
         loss="categorical_crossentropy",
         metrics=["categorical_accuracy"]
@@ -100,61 +100,61 @@ for mb_size in mb_sizes:
     # Save history.
     # Install the module 'fastparquet' for working with the parquet binary format.
     learning_history.to_parquet(f"../histories/history-03-4-mb_size-{mb_size}.parquet")
+# *****************************************************************
+# Mini-batch size: 200
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 2.341261148452759
+# Cost function at epoch of 1000:
+# Training MSE = 0.3811555802822113
+# Learning time = 6.79 minutes
+# *****************************************************************
+# Mini-batch size: 100
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 2.12575626373291
+# Cost function at epoch of 1000:
+# Training MSE = 0.3293526768684387
+# Learning time = 12.62 minutes
+# *****************************************************************
+# Mini-batch size: 50
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 1.8981003761291504
+# Cost function at epoch of 1000:
+# Training MSE = 0.30611270666122437
+# Learning time = 22.04 minutes
+# *****************************************************************
+# Mini-batch size: 20
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 1.4687438011169434
+# Cost function at epoch of 1000:
+# Training MSE = 0.2678740322589874
+# Learning time = 46.98 minutes
+# *****************************************************************
+# Mini-batch size: 10
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 1.2324615716934204
+# Cost function at epoch of 1000:
+# Training MSE = 0.24037234485149384
+# Learning time = 87.38 minutes
+# *****************************************************************
+# Mini-batch size: 5
+# ...
+# Cost function at epoch of 0:
+# Training MSE = 1.2425670623779297
+# Cost function at epoch of 1000:
+# Training MSE = 0.22461719810962677
+# Learning time = 170.48 minutes
+
 # Save learning time.
 # Install the module 'fastparquet' for working with the parquet binary format.
 pd.DataFrame(
     data=learning_time_dict.items(),
     columns=['mini_batch_size', 'learning_time_in_minutes'],
 ).set_index('mini_batch_size').to_parquet("../histories/history-03-4-mb_size-learning_time.parquet")
-
-# *****************************************************************
-# Mini-batch size: 200
-# ...
-# Cost function at epoch of 0:
-# Training MSE = 2.229443311691284
-# Cost function at epoch of 1000:
-# Training MSE = 0.36729559302330017
-# Learning time = 6.94 minutes
-# *****************************************************************
-# Mini-batch size: 100
-# ...
-# Cost function at epoch of 0:
-# Training MSE = 2.044503927230835
-# Cost function at epoch of 1000:
-# Training MSE = 0.3306983709335327
-# Learning time = 12.92 minutes
-# *****************************************************************
-# Mini-batch size: 50
-# ...
-# Cost function at epoch of 0:
-# Training MSE = 1.9720191955566406
-# Cost function at epoch of 1000:
-# Training MSE = 0.30878108739852905
-# Learning time = 22.37 minutes
-# *****************************************************************
-# Mini-batch size: 20
-# ...
-# Cost function at epoch of 0:
-# Training MSE = 1.4063093662261963
-# Cost function at epoch of 1000:
-# Training MSE = 0.2639326751232147
-# Learning time = 45.69 minutes
-# *****************************************************************
-# Mini-batch size: 10
-# ...
-# Cost function at epoch of 0:
-# Training MSE = 1.2854679822921753
-# Cost function at epoch of 1000:
-# Training MSE = 0.23946025967597961
-# Learning time = 85.34 minutes
-# *****************************************************************
-# Mini-batch size: 5
-# ...
-# Cost function at epoch of 0:
-# Training MSE = 0.9960035681724548
-# Cost function at epoch of 1000:
-# Training MSE = 0.23836740851402283
-# Learning time = 167.16 minutes
 
 # Load histories
 learning_history_dict = {}

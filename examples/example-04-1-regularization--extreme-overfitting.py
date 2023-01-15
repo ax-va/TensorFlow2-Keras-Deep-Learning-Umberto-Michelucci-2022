@@ -19,10 +19,7 @@ import matplotlib.font_manager as fm
 
 # tensorflow libraries
 from tensorflow import keras
-from keras import layers
 import tensorflow as tf
-import tensorflow_docs as tfdocs
-import tensorflow_docs.modeling
 
 import importlib
 set_style = importlib.import_module("ADL-Book-2nd-Ed.modules.style_setting").set_style
@@ -71,22 +68,8 @@ print('The dataset has', n_training_samples, 'training samples.')
 print('The dataset has', n_dim, 'features.')
 # The dataset has 13 features.
 
-#
-# def normalize_dataset(dataset):
-#     mu = np.mean(dataset, axis=0)
-#     sigma = np.std(dataset, axis=0)
-#     normalized_dataset = (dataset - mu) / sigma
-#     return normalized_dataset
-
-
 features_norm, mu, sigma = normalize_data(features)
 (train_x, train_y), (dev_x, dev_y) = split_into_train_and_dev_data(features_norm, target)
-# np.random.seed(42)  # reproducible random
-# rnd = np.random.rand(len(features_norm)) < 0.8
-# train_x = features_norm[rnd]
-# train_y = target[rnd]
-# dev_x = features_norm[~rnd]
-# dev_y = target[~rnd]
 print(train_x.shape)
 # (399, 13)
 print(train_y.shape)
@@ -120,12 +103,12 @@ learning_history, learning_time = fit_model(
     num_epochs=EPOCHS
 )
 # Cost function at epoch of 0:
-# Training MSE = 584.1921997070312
-# Dev MSE = 554.349609375
+# Training MSE = 588.7750854492188
+# Dev MSE = 563.5415649414062
 # Cost function at epoch of 10000:
-# Training MSE = 0.033795516937971115
-# Dev MSE = 25.265743255615234
-# Learning time = 3.33 minutes
+# Training MSE = 0.033021796494722366
+# Dev MSE = 19.62705421447754
+# Learning time = 3.35 minutes
 
 learning_history.to_parquet(f"../histories/history-04-1-batch_size-{BATCH_SIZE}-structure-{STRUCTURE}.parquet")
 # Save the trained model
