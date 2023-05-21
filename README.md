@@ -31,8 +31,8 @@ http://www.image-net.org/
 
 ## Useful links
 
-IPython's magic commands:
-http://ipython.readthedocs.io/en/stable/interactive/magics.htm
+IPython documentation:
+https://ipython.readthedocs.io/en/st
 
-Kaggle's competitions:
+Kaggle competitions:
 https://www.kaggle.com/competitions
