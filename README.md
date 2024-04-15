@@ -1,5 +1,5 @@
 # TensorFlow2-Keras-Michelucci-2022
-Examples based on Umberto Michelucci's book: "Applied Deep Learning with TensorFlow 2: Learn to Implement Advanced Deep Learning Techniques with Python", Second Edition, Apress, 2022
+Examples based on the Umberto Michelucci's book: "Applied Deep Learning with TensorFlow 2: Learn to Implement Advanced Deep Learning Techniques with Python", Second Edition, Apress, 2022
 
 ## Online sources
 
